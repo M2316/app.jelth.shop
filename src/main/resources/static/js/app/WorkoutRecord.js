@@ -13,14 +13,17 @@ $(function(){
     pageElementEventAdd("All");
     AjaxRequest("myRoutineListRequest"); //우측 사이드바에 routine목록 로딩
 
-    setTimeout((e)=>{
-        $('.routine-list-checkbox').toggleClass("displayNone");
-        $('.routine-modify-btn-box').toggleClass("displayNone");
-    },500)
     let data = {
         routine_record_date:nowSelectDate()
     }
-    AjaxRequest("dailyRoutineMasterRequest",data);
+
+
+    setTimeout((e)=>{
+        $('.routine-list-checkbox').toggleClass("displayNone");
+        $('.routine-modify-btn-box').toggleClass("displayNone");
+        AjaxRequest("dailyRoutineMasterRequest",data);
+    },500)
+
 });
 
 /* 1. 이벤트 제어 function
@@ -132,6 +135,7 @@ function pageElementEventAdd(flag){
                     routine_record_date:nowSelectDate()
                 }
                 AjaxRequest("dailyRoutineMasterRequest",data);
+                calendarRendering(resultYear,resultMonth,resultDate,resultDay);
             });
             if("#routineAppendBtnOK" === flag) break;
         case "All":
@@ -604,6 +608,11 @@ function AjaxRequest(type,data,flag){
                     AjaxRequest("dailyRoutineMasterRequest",data);
                 }
             });
+            break;
+        case "calendarLineRequest":
+            console.log("calendarLineRequest : Ajax Request !!");
+
+
             break;
     }
 }

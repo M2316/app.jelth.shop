@@ -6,7 +6,9 @@ import com.app.jelth.domain.model.DailyRecordM;
 import com.app.jelth.domain.model.MyRoutine;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AppRecordService {
@@ -48,5 +50,9 @@ public class AppRecordService {
 
     public void DeleteRoutineMaster(DailyRecordM dailyRecordM) {
         appRecordMapper.DeleteRoutineMaster(dailyRecordM);
+    }
+
+    public List<HashMap<String, Object>> calendarLineRequest(Map<String, Object> calendarResult) {
+        return appRecordMapper.calendarLineRequest(calendarResult);
     }
 }

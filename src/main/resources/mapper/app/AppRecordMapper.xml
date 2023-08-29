@@ -99,4 +99,14 @@
         DELETE FROM daily_record_m
         WHERE daily_record_master_code = #{dailyRecordMasterCode}
     </delete>
+    <select id="calendarLineRequest" parameterType="HashMap" resultType="HashMap">
+        select
+            routine_record_date ,
+            right(routine_record_date,2) as attendanceDate
+        from daily_record_m
+        where user_code = #{userCode}
+          and left(routine_record_date,7) = #{calendarMonth}
+        group by routine_record_date
+        order by routine_record_date
+    </select>
 </mapper>

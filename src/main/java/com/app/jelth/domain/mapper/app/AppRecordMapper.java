@@ -4,7 +4,9 @@ import com.app.jelth.domain.model.DailyRecordM;
 import com.app.jelth.domain.model.MyRoutine;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface AppRecordMapper {
@@ -25,4 +27,6 @@ public interface AppRecordMapper {
     List<DailyRecordM> getDailyRecordMList(DailyRecordM dailyRecordM);
 
     void DeleteRoutineMaster(DailyRecordM dailyRecordM);
+
+    List<HashMap<String, Object>> calendarLineRequest(Map<String, Object> calendarResult);
 }

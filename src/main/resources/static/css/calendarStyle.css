@@ -33,7 +33,7 @@
 }
 .attendance-line{
   height: 2px;
-  background-color: white;
+  background-color: #c992f4;
 }
 .dateLabel{
   height: 90%;
@@ -57,11 +57,12 @@
 
 /* 선택한 날짜 색 표시 */
 .selectedDate{
-  background-color: rgb(115, 157, 235);
+  border: 3px solid #c992f4;
   border-radius: 2em;
+
 }
 .selectedDate span{
-  background-color: rgb(115, 157, 235);
+
 }
 
 

@@ -273,53 +273,78 @@
      * 달력 날짜 리스트를 가져와서 calendarBody에 랜더링 해주는 함수
      */
     function calendarRendering(resultYear,resultMonth,resultDate,resultDay){
+        let data = {
+            "resultYear":resultYear,
+            "resultMonth":resultMonth+1
+        };
+        $.ajax({
+            url:'/api/app1/calendarLineRequest',
+            type:'post',
+            contentType:"application/json;charset=UTF-8",
+            dataType:"json",
+            async: false,
+            data:JSON.stringify(data),
+            success:function(res){
 
-        //달력표 날짜 가져오기
-        let calendarArry = calendarDateReturn(resultYear,resultMonth,resultDate);
-        //캘린더 돔 생성
-        for(let i=0; i<6; i++){
-            $weekBox = document.createElement('div');
-            $weekBox.classList.add('weekBox');
-            for(let j=0; j<7; j++){
-                $dateBox = document.createElement('div');
-                $dateBox.classList.add('dateBox');
+                $("#calendarBody").text("");
+                //달력표 날짜 가져오기
+                let calendarArry = calendarDateReturn(resultYear,resultMonth,resultDate);
+                //캘린더 돔 생성
+                for(let i=0; i<6; i++){
+                    $weekBox = document.createElement('div');
+                    $weekBox.classList.add('weekBox');
+                    for(let j=0; j<7; j++){
+                        $dateBox = document.createElement('div');
+                        $dateBox.classList.add('dateBox');
 
 
-                $dateLabel = document.createElement('span');
-                $dateLabel.classList.add("dateLabel");
+                        $dateLabel = document.createElement('span');
+                        $dateLabel.classList.add("dateLabel");
 
-                $dateBox.appendChild($dateLabel);
-                $weekBox.appendChild($dateBox);
+                        $dateBox.appendChild($dateLabel);
+                        $weekBox.appendChild($dateBox);
 
-            }
-            document.querySelector(".calendarBody").appendChild($weekBox);
-        }
-        for(let i=0; i<calendarArry.length;i++){
-            if(resultMonth !== (calendarArry[i].month)){
-                document.querySelectorAll(".dateLabel")[i].style.color = 'rgb(100 100 100)';
-                if(resultMonth > calendarArry[i].month){
-                    document.querySelectorAll(".dateLabel")[i].dataset.monthFlag = 'before';
-                }else if(resultMonth < calendarArry[i].month){
-                    document.querySelectorAll(".dateLabel")[i].dataset.monthFlag = 'next';
+                    }
+                    document.querySelector(".calendarBody").appendChild($weekBox);
                 }
-            }else{
-                //운동 날짜 표시하는 점 추가
-                let $attendanceFlag = document.createElement('span');
-                $attendanceFlag.innerHTML = 'ㅡ';
-                $attendanceFlag.classList.add('attendance-line');
-                document.querySelectorAll(".dateBox")[i].appendChild($attendanceFlag);
+                for(let i=0; i<calendarArry.length;i++){
+                    if(resultMonth !== (calendarArry[i].month)){
+                        document.querySelectorAll(".dateLabel")[i].style.color = 'rgb(100 100 100)';
+                        if(resultMonth > calendarArry[i].month){
+                            document.querySelectorAll(".dateLabel")[i].dataset.monthFlag = 'before';
+                        }else if(resultMonth < calendarArry[i].month){
+                            document.querySelectorAll(".dateLabel")[i].dataset.monthFlag = 'next';
+                        }
+                    }else{
+                        //운동 날짜 표시하는 점 추가
+                        let $attendanceFlag = document.createElement('span');
+
+                        res.forEach((item)=>{
+                            if(calendarArry[i].date === item.attendancedate*1){
+                                $attendanceFlag.innerHTML = 'ㅡ';
+                                $attendanceFlag.classList.add('attendance-line');
+                            }
+                        })
+                        document.querySelectorAll(".dateBox")[i].appendChild($attendanceFlag);
+                    }
+                    document.querySelectorAll(".dateLabel")[i].innerHTML = calendarArry[i].date;
+                    document.querySelectorAll(".dateLabel")[i].dataset.month = calendarArry[i].month
+                    document.querySelectorAll(".dateLabel")[i].setAttribute("data-value",calendarArry[i].date);
+                }
+                document.querySelector("#calendarMonthValue").innerHTML = resultMonth+1;
+                document.querySelector("#dateSaveBox").dataset.calendarYear = resultYear;
+                document.querySelector("#dateSaveBox").dataset.calendarMonth = resultMonth;
+                document.querySelector("#dateSaveBox").dataset.calendarDate = resultDate;
+                document.querySelector("#dateSaveBox").dataset.calendarDay = resultDay;
+                document.querySelector("#calendarYearValue").innerHTML = resultYear;
+                document.querySelector("#calendarMonthName").innerHTML = "."+monthName[resultMonth];
+                $(".dateBox").on("click",function(e){
+                    calendarSelectionEvIn(e);
+                });
             }
-            document.querySelectorAll(".dateLabel")[i].innerHTML = calendarArry[i].date;
-            document.querySelectorAll(".dateLabel")[i].dataset.month = calendarArry[i].month
-            document.querySelectorAll(".dateLabel")[i].setAttribute("data-value",calendarArry[i].date);
-        }
-        document.querySelector("#calendarMonthValue").innerHTML = resultMonth+1;
-        document.querySelector("#dateSaveBox").dataset.calendarYear = resultYear;
-        document.querySelector("#dateSaveBox").dataset.calendarMonth = resultMonth;
-        document.querySelector("#dateSaveBox").dataset.calendarDate = resultDate;
-        document.querySelector("#dateSaveBox").dataset.calendarDay = resultDay;
-        document.querySelector("#calendarYearValue").innerHTML = resultYear;
-        document.querySelector("#calendarMonthName").innerHTML = "."+monthName[resultMonth];
+        });
+
+
 
     }
 
@@ -425,16 +450,10 @@
         //전 달로 이동 처리
         $(".month-box img[data-flag='before']").on("click",function(e){
             beforeMonthEvIn(e);
-            $(".dateBox").on("click",function(e){
-                calendarSelectionEvIn(e);
-            });
         });
         //다음 달로 이동 처리
         $(".month-box img[data-flag='next']").on("click",function(e){
             nextMonthEvIn(e);
-            $(".dateBox").on("click",function(e){
-                calendarSelectionEvIn(e);
-            });
         });
         //달력 선택 일 표시하기
         $(".dateBox").on("click",function(e){
@@ -519,7 +538,6 @@
     });
     // Jquery End
     function beforeMonthEvIn(e){
-        $("#calendarBody").text("");
         resultDate = document.querySelector("#dateSaveBox").dataset.calendarDate*1;
         resultMonth = (document.querySelector("#dateSaveBox").dataset.calendarMonth*1)-1;
         resultYear = document.querySelector("#dateSaveBox").dataset.calendarYear*1;
@@ -536,7 +554,6 @@
     }
     function nextMonthEvIn(e){
 
-        $("#calendarBody").text("");
         resultDate = document.querySelector("#dateSaveBox").dataset.calendarDate*1;
         resultMonth = (document.querySelector("#dateSaveBox").dataset.calendarMonth*1)+1;
         resultYear = document.querySelector("#dateSaveBox").dataset.calendarYear*1;

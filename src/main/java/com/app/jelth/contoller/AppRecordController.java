@@ -12,7 +12,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/api/app1")
@@ -113,6 +115,21 @@ public class AppRecordController {
         dailyRecordM.setUserCode(getTokenInfoUserCode(loginToken));
         appRecordService.DeleteRoutineMaster(dailyRecordM);
         return "Routine 삭제 성공~!";
+    }
+    @PostMapping("/calendarLineRequest")
+    @ResponseBody
+    public List<HashMap<String, Object>> calendarLineRequest(@RequestBody Map<String, Object> calendarResult, @CookieValue(value ="loginToken", required = false) String loginToken){
+        //List 안에있는 항목에 userCode 넣기
+        calendarResult.put("userCode",getTokenInfoUserCode(loginToken));
+        String calendarMonth;
+        if(Integer.parseInt(calendarResult.get("resultMonth")+"") >= 10){
+            calendarMonth =  calendarResult.get("resultYear")+"-"+calendarResult.get("resultMonth");
+        }else{
+            calendarMonth =  calendarResult.get("resultYear")+"-0"+calendarResult.get("resultMonth");
+        }
+        calendarResult.put("calendarMonth",calendarMonth);
+        List<HashMap<String, Object>> attendanceList = appRecordService.calendarLineRequest(calendarResult);
+        return attendanceList;
     }
     /**
      * 토큰에서 uId 꺼내는 함수
