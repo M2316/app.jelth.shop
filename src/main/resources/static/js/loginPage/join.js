@@ -1,11 +1,16 @@
 $(function(){
 
     $("#uId").change(function(e){
+        if('' !== $('#uId').val()){
+            return;
+        }
         let memberId = e.currentTarget.value;
-        var reg = /^[a-z0-9]+[0-9a-z]{5,19}$/g;
+        var idRegA = /^[A-za-z0-9]{5,15}/g;
+        var idRegB = /^[A-za-z]/g;
 
-        if(!reg.test(memberId)){
+        if(!idRegA.test(memberId) || !idRegB.test(memberId)){
             alert("영문과 숫자만 사용해 주세요");
+            $('#uId').val("");
             return;
         }
 

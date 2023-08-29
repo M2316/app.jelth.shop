@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class DailyRecordD extends BasicModel{
-    private String dailyRecordDCode;
-    private String dailyRecordMCode;
+    private String dailyRecordDetailCode;
+    private String dailyRecordMasterCode;
     private String userCode;
     private String myRoutineListCode;
     private String workoutRoutineSeq;

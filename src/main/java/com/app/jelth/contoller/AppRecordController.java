@@ -105,6 +105,15 @@ public class AppRecordController {
         List<DailyRecordM> DailyRecordMList = appRecordService.getDailyRecordMList(dailyRecordM);
         return DailyRecordMList;
     }
+
+    @PostMapping("/DeleteRoutineMaster")
+    @ResponseBody
+    public String DeleteRoutineMaster(@RequestBody DailyRecordM dailyRecordM, @CookieValue(value ="loginToken", required = false) String loginToken){
+        //List 안에있는 항목에 userCode 넣기
+        dailyRecordM.setUserCode(getTokenInfoUserCode(loginToken));
+        appRecordService.DeleteRoutineMaster(dailyRecordM);
+        return "Routine 삭제 성공~!";
+    }
     /**
      * 토큰에서 uId 꺼내는 함수
      * @Params String loginToken 로그인 정보가 담긴 토큰

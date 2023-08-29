@@ -65,7 +65,7 @@ create table DAILY_WORKOUT_SCORE(
 );
 
 create table DAILY_RECORD_M(
-	DAILY_RECORD_M_CODE VARCHAR(12) primary key 	,
+	DAILY_RECORD_MASTER_CODE VARCHAR(12) primary key 	,
 	USER_CODE VARCHAR(12) not null					,
 	MY_ROUTINE_LIST_CODE VARCHAR(12) not null					,
 	ROUTINE_TYPE_A VARCHAR(10) not null							,
@@ -74,8 +74,8 @@ create table DAILY_RECORD_M(
 );
 
 create table DAILY_RECORD_D(
-	DAILY_RECORD_D_CODE VARCHAR(12) primary key		,
-	DAILY_RECORD_M_CODE VARCHAR(12)					,
+	DAILY_RECORD_DETAIL_CODE VARCHAR(12) primary key		,
+	DAILY_RECORD_MASTER_CODE VARCHAR(12)					,
 	USER_CODE VARCHAR(12) not null					,
 	MY_ROUTINE_LIST_CODE VARCHAR(12) not null		,
 	WORKOUT_ROUTINE_SEQ INT not null				,

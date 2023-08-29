@@ -45,4 +45,8 @@ public class AppRecordService {
         List<DailyRecordM> dailyRecordMList = appRecordMapper.getDailyRecordMList(dailyRecordM);
         return dailyRecordMList;
     }
+
+    public void DeleteRoutineMaster(DailyRecordM dailyRecordM) {
+        appRecordMapper.DeleteRoutineMaster(dailyRecordM);
+    }
 }

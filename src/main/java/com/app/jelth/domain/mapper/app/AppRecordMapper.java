@@ -23,4 +23,6 @@ public interface AppRecordMapper {
     void dayilRoutineAppend(DailyRecordM dailyRecordM);
 
     List<DailyRecordM> getDailyRecordMList(DailyRecordM dailyRecordM);
+
+    void DeleteRoutineMaster(DailyRecordM dailyRecordM);
 }

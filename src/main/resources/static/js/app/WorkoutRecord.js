@@ -128,7 +128,10 @@ function pageElementEventAdd(flag){
                 document.querySelectorAll('.routine-list-checkbox input').forEach((input)=>{
                     input.checked = false;
                 })
-
+                let data = {
+                    routine_record_date:nowSelectDate()
+                }
+                AjaxRequest("dailyRoutineMasterRequest",data);
             });
             if("#routineAppendBtnOK" === flag) break;
         case "All":
@@ -200,13 +203,29 @@ function pageElementEventAdd(flag){
             $('.item-box').on("touchend",function(e){
                 eventEndTime = e.timeStamp;
                 if((eventEndTime-eventStartTime)>800){
-                    AjaxRequest("DeleteTodayRoutine",);
+                    if(!confirm("선택 루틴을 삭제 할까요?"))return;
+                    let routineTitle = e.currentTarget.querySelector('.routine-title');
+                    let data ={
+                        routine_name: routineTitle.dataset.routineName,
+                        routine_record_date: routineTitle.dataset.routineRecordDate,
+                        my_routine_list_code:routineTitle.dataset.myRoutineListCode,
+                        daily_record_master_code:routineTitle.dataset.dailyRecordMasterCode
+                    }
+                    AjaxRequest("DeleteRoutineMaster",data);
                 }
             });
             $('.item-box').on("mouseup",function(e){
                 eventEndTime = e.timeStamp;
                 if((eventEndTime-eventStartTime)>800){
-                    DeleteTodayRoutine(e);
+                    if(!confirm("선택 루틴을 삭제 할까요?"))return;
+                    let routineTitle = e.currentTarget.querySelector('.routine-title');
+                    let data ={
+                        routine_name: routineTitle.dataset.routineName,
+                        routine_record_date: routineTitle.dataset.routineRecordDate,
+                        my_routine_list_code:routineTitle.dataset.myRoutineListCode,
+                        daily_record_master_code:routineTitle.dataset.dailyRecordMasterCode
+                    }
+                    AjaxRequest("DeleteRoutineMaster",data);
                 }
             });
 
@@ -345,6 +364,11 @@ function workoutRoutineBoxDOM(data){
         $itemBox.classList.add("item-box");
         let $routineTitle = document.createElement('div');
         $routineTitle.classList.add("routine-title");
+        $routineTitle.dataset.dailyRecordMasterCode = routine.daily_record_master_code;
+        $routineTitle.dataset.routineName = routine.routine_name;
+        $routineTitle.dataset.routineName = routine.routine_name;
+        $routineTitle.dataset.routineRecordDate = routine.routine_record_date;
+        $routineTitle.dataset.myRoutineListCode = routine.my_routine_list_code;
 
         let $routineIcon = document.createElement('div');
         $routineIcon.classList.add("routine-icon");
@@ -474,6 +498,7 @@ function AjaxRequest(type,data,flag){
             console.log("AJAX : selDateRoutineRequest을 수행합니다");
             break;
         case "myRoutineListRequest":
+            console.log("myRoutineListRequest : Ajax Request !!");
             $.ajax({
                 url:'/api/app1/getMyRoutineList',
                 type:'post',
@@ -500,7 +525,6 @@ function AjaxRequest(type,data,flag){
                     console.log(res);
                 }
             });
-            console.log(data);
             break;
         case "myRoutineListAdd":
             console.log("myRoutineListAdd : Ajax Request !!");
@@ -531,7 +555,6 @@ function AjaxRequest(type,data,flag){
                     console.log(res);
                 }
             });
-            console.log(data);
             break;
         case "myRoutineListDelete":
             console.log("myRoutineListDelete : Ajax Request !!");
@@ -546,7 +569,6 @@ function AjaxRequest(type,data,flag){
                     console.log(res);
                 }
             });
-            console.log(data);
             break;
         case "dailyRoutineMasterRequest":
             console.log("dailyRoutineMasterRequest : Ajax Request !!");
@@ -563,7 +585,25 @@ function AjaxRequest(type,data,flag){
                     workoutRoutineBoxDOM(res);
                 }
             });
-            console.log(data);
+            break;
+        case "DeleteRoutineMaster":
+            console.log("dailyRoutineMasterRequest : Ajax Request !!");
+
+            $.ajax({
+                url:'/api/app1/DeleteRoutineMaster',
+                type:'post',
+                contentType:"application/json;charset=UTF-8",
+                dataType:"text",
+                async: false,
+                data:JSON.stringify(data),
+                success:function(res){
+                    console.log(res);
+                    let data = {
+                        routine_record_date:nowSelectDate()
+                    }
+                    AjaxRequest("dailyRoutineMasterRequest",data);
+                }
+            });
             break;
     }
 }
@@ -586,9 +626,6 @@ function nowSelectDate(){
         alert("날짜를 먼저 선택해 주세요.");
         return;
     }
-
-
-
     let selYear = document.querySelector('#dateSaveBox').dataset.calendarYear;
     let selMonth = document.querySelector('#dateSaveBox').dataset.calendarMonth * 1 + 1;
     if(selMonth < 10){
@@ -598,8 +635,6 @@ function nowSelectDate(){
     if(selDate < 10){
         selDate = "0"+selDate
     }
-    let selFullDate = new Date(selYear+"-"+selMonth+"-"+selDate);
-
-    console.log(selYear+"-"+selMonth+"-"+selDate);
+    console.log("선택 날짜 : "+selYear+"-"+selMonth+"-"+selDate);
     return selYear+"-"+selMonth+"-"+selDate;
 }

@@ -1,6 +1,11 @@
+### CUSTOM ###
+application.yml
+/QUERY/
+
+### END ###
+
 HELP.md
 .gradle
-application.yml
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/

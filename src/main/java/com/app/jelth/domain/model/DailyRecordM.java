@@ -10,7 +10,8 @@ import java.util.List;
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class DailyRecordM extends BasicModel{
-    private String dailyRecordMCode;
+    private String dailyRecordMasterCode;
+
     private String userCode;
     private String myRoutineListCode;
     private String routineTypeA;

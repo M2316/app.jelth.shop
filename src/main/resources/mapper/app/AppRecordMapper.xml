@@ -68,7 +68,7 @@
     </delete>
     <insert id="dayilRoutineAppend" parameterType="com.app.jelth.domain.model.DailyRecordM">
         INSERT INTO daily_record_m(
-            daily_record_m_code,
+            daily_record_master_code,
             user_code,
             my_routine_list_code,
             routine_type_a,
@@ -95,4 +95,8 @@
         ORDER BY m.routine_seq
 
     </select>
+    <delete id="DeleteRoutineMaster" parameterType="com.app.jelth.domain.model.DailyRecordM">
+        DELETE FROM daily_record_m
+        WHERE daily_record_master_code = #{dailyRecordMasterCode}
+    </delete>
 </mapper>
