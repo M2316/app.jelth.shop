@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.app.jelth.domain.mapper.user.UserMapper">
+
+
+    <select id="checkUserId" resultType="int" parameterType="String">
+        SELECT
+            count(*)
+        FROM jelth_user
+        WHERE u_id = #{inputId}
+    </select>
+
+    <select id="LoginRequestUserCheck" resultType="com.app.jelth.domain.model.JelthUser" parameterType="com.app.jelth.domain.model.JelthUser">
+        SELECT
+            u_id
+            ,u_pw
+        ,user_code
+        FROM jelth_user
+        WHERE u_id = #{uId}
+    </select>
+
+
+    <insert id="setMemberJoin" parameterType="com.app.jelth.domain.model.JelthUser">
+        insert into jelth_user(
+            user_code,
+            u_id,
+            u_pw,
+            u_name,
+            u_body_height,
+            u_body_weight,
+            token_code
+        ) values(
+            get_random_uuid(),
+             #{uId},
+             #{uPw},
+             #{uName},
+             #{uBodyHeight},
+             #{uBodyWeight},
+             null
+        )
+    </insert>
+
+
+
+    <update id="userLoginTimeUpdate" parameterType="String">
+        update jelth_user set last_login_time = now() WHERE u_id = #{uId}
+    </update>
+    <update id="userLogoutTimeUpdate" parameterType="String">
+        update jelth_user set last_logout_time = now() WHERE u_id = #{uId}
+    </update>
+
+    <insert id="setBasicWorkoutListAppend" parameterType="String">
+        insert into my_workout_routine_list(
+            my_routine_list_code,
+            user_code,
+            routine_code,
+            routine_name,
+            routine_type_a,
+            routine_type_b,
+            routine_type_c,
+            routine_type_d,
+            insert_time,
+            insert_user
+        ) select
+              get_random_uuid(),
+              (select user_code from jelth_user where u_id = #{uId}) as user_code,
+              routine_code,
+              routine_name,
+              routine_type_a,
+              routine_type_b,
+              routine_type_c,
+              routine_type_d,
+              now(),
+              'create_basic_data'
+        from basic_workout_routine
+    </insert>
+</mapper>

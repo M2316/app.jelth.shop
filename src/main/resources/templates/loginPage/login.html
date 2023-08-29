@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+
+    <!-- Favicons -->
+    <link th:href="@{/img/white-report.png}" rel="icon">
+    <link th:href="@{/img/white-report.png}" rel="apple-touch-icon">
+    <!-- RESET CSS -->
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <!-- ICONS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+
+    <!-- Jquery -->
+    <script th:src="@{/assets/jquery/jquery-3.7.0.min.js}"></script>
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <title>JELTH</title>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-main-logo">
+            <img th:src="@{/img/login-page-main-log.png}" alt="">
+        </div>
+        <div class="login-info-wrap">
+            <form action="/login" method="post" id="userLoginForm">
+                <div class="login-info">
+                    <div class="login-input-logo icon">
+                        <i class="bi bi-at"></i>
+                    </div>
+                    <div class="login-input-text">
+                        <input type="text" name="uId" placeholder="ID">
+                    </div>
+                </div>
+                <div class="login-info">
+                    <div class="login-input-logo icon">
+                        <i class="bi bi-key"></i>
+                    </div>
+                    <div class="login-input-text">
+                        <input type="password" name="uPw" placeholder="PASSWORD">
+                    </div>
+                </div>
+                <div class="login-checkbox-wrap">
+                    <div class="form-check info-status">
+                        <input class="form-check-input login-checkbox" type="checkbox" value="" id="saveInfoCheck" name="loginInfoSaveBl">
+                        <label class="form-check-label" for="saveInfoCheck">
+                          Remember me
+                        </label>
+                    </div>
+                    <div class="form-check info-status">
+                        <input class="form-check-input login-checkbox" type="checkbox" value="" id="autoLoginCheck" name="autoLoginBl">
+                        <label class="form-check-label" for="autoLoginCheck">
+                          Auto Login
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="login-login-btn-wrap">
+            <button type="button" class="btn login-btn" id="userLoginBtn" form="userLoginForm">Login</button>
+        </div>
+        <div class="login-join-btn-wrap">
+            <a th:href="@{/join}" id="userJoinBtn">Not a member? <b>Join new</b></a>
+        </div>
+    </div>
+    <script th:src="@{/js/loginPage/login.js}"></script>
+</body>
+
+<script th:inline="javascript">
+    let msg = [[${msg}]];
+    if(msg !== null && msg.length > 0){
+        alert(msg);
+    }
+</script>
+</html>

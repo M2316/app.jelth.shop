@@ -1,0 +1,532 @@
+/* CSS 변수 */
+:root{
+    --login-info-box-border-color:1px solid #ffffff8c;
+    --main-impact-color:#C992F4;
+}
+
+.item-wrap::-webkit-scrollbar {
+    display: none;
+}
+
+*{
+    touch-action: pan-y pan-x;
+    overflow: hidden;
+
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+
+    /*텍스트 선택 불가*/
+    -webkit-user-select: none !important;
+    -moz-user-select: -moz-none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+
+
+
+}
+
+input::-webkit-input-placeholder,
+input::-moz-placeholder,
+input:-ms-input-placeholder,
+input:-moz-placeholder,
+input::placeholder {
+    font-size: 90%;
+}
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-text-fill-color: #ffffff;
+    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
+    box-shadow: 0 0 0px 1000px #ffffff00 inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* 기본 CSS 설정 */
+body{
+    background-image: url("../img/background_image.png");
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    background-repeat:no-repeat ;
+    background-color: black;
+    background-position: center;
+}
+
+.icon{
+    color: var(--main-impact-color);
+}
+
+
+
+a{
+    color: inherit;
+    text-decoration: none;
+}
+
+.CARD{
+    background-color: #565656;
+    border-radius: 30px;
+    width: 90%;
+    height: 90%;
+    margin: 0 auto;
+}
+.displayNone{
+    display: none;
+}
+
+/* LOGIN PAGE START*/
+.login-container{
+    width: 80vw;
+    height: 90vh;
+    background: #e9e9e91a;
+    -webkit-backdrop-filter: blur(3px);
+    border-radius: 40px;
+}
+
+
+
+.login-main-logo{
+    margin: 10vh auto;
+    width: 70vw;
+}
+
+.login-info{
+    display: flex;
+    margin: 0 auto;
+    width: 60vw;
+}
+
+.login-input-logo{
+    border-bottom: var(--login-info-box-border-color);
+    border-right: var(--login-info-box-border-color);
+    margin-bottom: 2vh;
+    height: 7vh;
+    width: 7vh;
+    text-align: center;
+}
+
+.login-input-logo i{
+    font-size: 2em;
+}
+.login-input-text{
+    margin-bottom: 2vh;
+    border-bottom: var(--login-info-box-border-color);
+    display: flex;
+    align-items: center;
+}
+
+.login-input-text input{
+    width: 180px;
+}
+
+.login-input-text input:focus{
+    outline: none;
+}
+
+.login-checkbox-wrap{
+    margin: 0 auto;
+    width: 65vw;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2vh;
+}
+.login-login-btn-wrap{
+    display: flex;
+    justify-content: center;
+}
+.login-login-btn-wrap button:hover {
+    border: #C992F4 solid 3px;
+    color: #C992F4;
+    background: #fff;
+}
+.login-btn{
+    width: 60vw;
+    border-radius: 50px;
+    height: 5vh;
+    background: var(--main-impact-color);
+    color: #fff;
+}
+
+.login-join-btn-wrap{
+    text-align: center;
+    margin: 7vh;
+}
+.login-join-btn-wrap b{
+    color: var(--main-impact-color);
+}
+.info-status label{
+    font-size: 13px;
+}
+/* LOGIN PAGE END */
+
+/* JOIN PAGE START */
+.join-container{
+    width: 80vw;
+    height: 90vh;
+    background: #e9e9e91a;
+    -webkit-backdrop-filter: blur(3px);
+    border-radius: 40px;
+    position: relative;
+}
+.join-page-back-box{
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    margin-left: 15px;
+
+}
+
+.join-title-wrap{
+    width: 100%;
+    height: 20vh;
+    padding: 5px 30px;
+
+}
+.join-title-box{
+    font-size: 2em;
+    font-weight: 600;
+    text-align: center;
+    line-height: 2em;
+    height: 40%;
+}
+.join-sub-title-box{
+    text-align: center;
+    font-size: 0.8em;
+    color: #9F9F9F;
+    height: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.join-info-wrap{
+    width: 100%;
+    overflow-y: auto;
+    height: 60%;
+}
+.join-info-box{
+    margin: 0px 15px;
+    padding: 7px 15px;
+    border-radius: 10px;
+    background-color: #3D3D3D;
+    height: 3.3em;
+    margin-bottom: 15px;
+}
+.join-info{
+    display: flex;
+    flex-direction: column;
+}
+.join-info input{
+    color: white;
+    background-color: #3D3D3D !important;
+}
+.join-info input:focus{
+    outline: none;
+}
+.join-info label{
+    font-size: 0.5em;
+    color: #9F9F9F;
+}
+
+.user-join-btn-wrap{
+    height: 17%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0px 15px;
+}
+
+.join-btn{
+    width: 100%;
+    border-radius: 50px;
+    height: 5vh;
+    background: var(--main-impact-color);
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.2em;
+}
+/* JOIN PAGE END */
+
+/* WORKOUT RECORD PAGE START*/
+.test-border{
+    border: limegreen solid 3px;
+}
+
+.menu-box:hover{
+    cursor: pointer;
+}
+.title-wrap{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 7vh;
+}
+.menu-box{
+    float: left;
+    position: absolute;
+    left: 20px;
+}
+.month-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.month-box b{
+    font-size: 3em;
+}
+.month-box span{
+    color: #949494;
+    font-size: 1em;
+    font-weight: 900;
+}
+.month-box img{
+    height: 2em;
+    padding: 0px 20px;
+}
+.month-box img:hover{
+    cursor: pointer;
+}
+.month-year{
+    display: flex;
+    flex-direction: column;
+}
+#calendarYearValue{
+    padding-left: 10px;
+}
+
+.app-container{
+    width: 100vw;
+    height: 100vh;
+    background: #e9e9e91a;
+    -webkit-backdrop-filter: blur(3px);
+    margin: 0 auto;
+    text-align: center;
+}
+
+.top-wrap{
+    height: 37vh;
+    display: flex;
+    align-items: center;
+}
+.middle-wrap{
+    margin: 2vh auto;
+    height: 4vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.bottom-wrap{
+    height: 48vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.dateBox{
+    cursor: pointer;
+}
+.calendar-wrap{
+    height: 100%;
+}
+.routine-done-checkbox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.routine-done-checkbox input{
+    color: var(--main-impact-color);
+    width: 1.5em;
+    height: 1.5em;
+}
+.Routine-btn-wrap{
+    border-radius: 50px;
+    height: 100%;
+    width: 80%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.Routine-btn-wrap button{
+    color: white;
+    font-size: 3vh;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: 900;
+    width: 100%;
+    background-color: var(--main-impact-color);
+}
+
+.routine-wrap{
+    height: 98%;
+    margin-bottom: 2%;
+}
+
+.item-wrap{
+    height: 100%;
+    padding: 2% 0;
+    overflow-y: scroll;
+}
+.item-box{
+    width: 100%;
+
+}
+.routine-title{
+    margin: 0 auto;
+    margin-top: 2%;
+    padding: 3px;
+    background: #484848;
+    border-radius: 1em;
+    width: 95%;
+    height: 7vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.routine-icon{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px;
+}
+.routine-icon img{
+    height: 90%;
+    margin: 0 auto;
+}
+.routine-name{
+    width: 80%;
+    padding-left: 5px;
+    text-align: left;
+}
+.routine-arrow{
+    width: 10%;
+    text-align: center;
+}
+.routine-arrow img{
+    height: 100%;
+}
+.routine-item-box{
+    margin: 0 auto;
+    width: 85%;
+    border: var(--main-impact-color) solid 1px;
+}
+.routine-score{
+    display: flex;
+    background: #484848;
+    justify-content: space-around;
+    align-items: center;
+}
+.rountset-delete-btn i{
+    font-size: 1.5em;
+}
+
+.routine-add-btn{
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #484848;
+}
+.routine-add-btn button{
+    font-size: 5vw;
+    color: white;
+    border-radius: 30px;
+    background-color: var(--main-impact-color);
+    width: 90%;
+}
+
+.routine-arrow, .routine-score{
+    cursor: pointer;
+}
+
+.sel-routine-box{
+    border: 2px solid var(--main-impact-color);
+}
+/* WORKOUT RECORD PAGE END */
+
+
+/* PC 화면으로 접속 style */
+@media (min-width: 500px) {
+    /* LOGIN PAGE START */
+    .login-container{
+        width: 400px;
+        backdrop-filter:blur(2px);
+    }
+    .login-main-logo{
+        width: 300px;
+        margin:120px auto;
+    }
+    .login-info{
+        width: 240px;
+    }
+    .login-checkbox-wrap{
+        width: 300px;
+    }
+    .login-btn{
+        width: 300px;
+    }
+    .login-login-btn-wrap button:hover {
+        border: #C992F4 solid 3px;
+        color: #C992F4;
+        background: #fff;
+    }
+    .info-status label{
+        font-size: 1em;
+    }
+
+    /* 회원가입 화면 */
+    .join-container{
+        width: 400px;
+        backdrop-filter:blur(2px);
+    }
+    /* LOGIN PAGE END */
+
+
+
+
+
+    /* WORKOUT RECORD PAGE START*/
+    .app-container{
+        width: 100vw;
+        height: 100vh;
+        background: #e9e9e91a;
+        -webkit-backdrop-filter: blur(3px);
+        margin: 0 auto;
+    }
+
+    .title-wrap, .top-wrap, .bottom-wrap{
+        width: 400px;
+        margin: 0 auto;
+    }
+    .modify-modal-wrap{
+        width: 260px;
+    }
+    .middle-wrap{
+        height: 5vh;
+    }
+    .Routine-btn-wrap{
+        width: 300px;
+    }
+    .Routine-btn-wrap button{
+        font-size: 2em;
+    }
+
+
+    .routine-add-btn button {
+        font-size: 20px;
+    }
+
+    /* WORKOUT RECORD PAGE END */
+}
+
+
+
+
+

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+
+    <!-- Favicons -->
+    <link th:href="@{/img/white-report.png}" rel="icon">
+    <link th:href="@{/img/white-report.png}" rel="apple-touch-icon">
+    <!-- RESET CSS -->
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <!-- ICONS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+
+    <!-- Jquery -->
+    <script th:src="@{/assets/jquery/jquery-3.7.0.min.js}"></script>
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <title>JELTH</title>
+</head>
+<body>
+    <div class="join-container">
+        <div class="join-page-back-box">
+            <a href="/login"><img th:src="@{/img/arrow_line_left.png}" alt=""></a>
+        </div>
+        <div class="join-title-wrap">
+            <div class="join-title-box">
+                <div class="join-title">
+                    <span>Join</span>
+                </div>
+            </div>
+            <div class="join-sub-title-box">
+                <span>Jelth와 함께 새로운 기록에 도전하고 <br>
+                    과거의 기록을 갱신하세요.</span>
+            </div>
+        </div>
+        <form class="join-info-wrap" action="/memberJoin" method="post" id="userJoinForm">
+            <div class="join-info-box">
+                <div class="join-info">
+                    <div class="join-info-label"><label for="uId">아이디</label><span id="uIdFlag"></span></div>
+                    <input type="text" name="uId" placeholder="Identification" id="uId">
+                </div>
+            </div>
+            <div class="join-info-box">
+                <div class="join-info">
+                    <div class="join-info-label"><label for="uPw">비밀번호</label><span id="uPwFlag"></span></div>
+                    <input type="password" name="uPw" placeholder="password [8~15자 영문 + 특수문자 조합]" maxlength="15" id="uPw">
+                </div>
+            </div>
+            <div class="join-info-box">
+                <div class="join-info">
+
+                    <div class="join-info-label"><label for="uPwCheck">비밀번호 확인</label><span id=uPwCheckFlag></span></div>
+                    <input type="password" placeholder="Password Check" id="uPwCheck">
+                </div>
+            </div>
+            <div class="join-info-box">
+                <div class="join-info">
+
+                    <div class="join-info-label"><label for="uName">이름</label><span id="uNameFlag"></span></div>
+                    <input type="text" name="uName" placeholder="Full Name" id="uName">
+                </div>
+            </div>
+            <div class="join-info-box">
+                <div class="join-info">
+
+                    <div class="join-info-label"><label for="bodyHeight">키</label><span id="bodyHeightFlag"></span></div>
+                    <input type="number" name="uBodyHeight" placeholder="Body Height" id="bodyHeight" maxlength="5">
+                </div>
+            </div>
+            <div class="join-info-box">
+                <div class="join-info">
+
+                    <div class="join-info-label"><label for="bodyWeight">몸무게</label><span id="bodyWeightFlag"></span></div>
+                    <input type="number" name="uBodyWeight" placeholder="Body Weight" id="bodyWeight" maxlength="5">
+                </div>
+            </div>
+            <div class="join-info-box" style="display: none;">
+                <div class="join-info">
+                    <label for="1">미사용</label>
+                    <input type="text" placeholder="미사용" id="1">
+                </div>
+            </div>
+            <div class="join-info-box" style="display: none;">
+                <div class="join-info">
+                    <label for="2">미사용</label>
+                    <input type="text" placeholder="미사용" id="2">
+                </div>
+            </div>
+            <div class="join-info-box" style="display: none;">
+                <div class="join-info">
+                    <label for="3">미사용</label>
+                    <input type="text" placeholder="미사용" id="3">
+                </div>
+            </div>
+        </form>
+        <div class="user-join-btn-wrap">
+            <button type="button" class="join-btn" form="userJoinForm" id="userJoinFormBtn">회원가입</button>
+        </div>
+    </div>
+    <script th:src="@{/js/loginPage/join.js}"></script>
+    <script th:inline="javascript">
+        let msg = [[${msg}]];
+        if(msg !== null && msg.length > 0){
+            alert(msg);
+        }
+    </script>
+</body>
+</html>

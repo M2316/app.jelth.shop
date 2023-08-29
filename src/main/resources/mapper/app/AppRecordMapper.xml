@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.app.jelth.domain.mapper.app.AppRecordMapper">
+
+    <select id="getMyRoutineList" resultType="com.app.jelth.domain.model.MyRoutine" parameterType="String">
+        SELECT
+            my_routine_list_code,
+            routine_code,
+            routine_name,
+            routine_type_b,
+            routine_type_a,
+            routine_type_c,
+            routine_type_d,
+            insert_time,
+            insert_user,
+            update_time,
+            update_user
+        FROM
+            my_workout_routine_list
+        WHERE
+            user_code = #{userCode}
+
+    </select>
+
+
+    <insert id="insertMyRoutine" parameterType="com.app.jelth.domain.model.MyRoutine">
+        INSERT INTO my_workout_routine_list(
+            my_routine_list_code,
+            user_code,
+            routine_code,
+            routine_name,
+            routine_type_a,
+            routine_type_b,
+            routine_type_c,
+            routine_type_d,
+            insert_time,
+            insert_user
+        ) values(
+            get_random_uuid(),
+            #{userCode},
+            get_random_uuid(),
+            #{routineName},
+            #{routineTypeA},
+            #{routineTypeB},
+            #{routineTypeC},
+            #{routineTypeD},
+            now(),
+            #{insertUser}
+        )
+    </insert>
+    <update id="ModifyMyRoutine" parameterType="com.app.jelth.domain.model.MyRoutine">
+        UPDATE
+            my_workout_routine_list
+        SET
+            routine_name = #{routineName}
+        WHERE
+            my_routine_list_code = #{myRoutineListCode}
+    </update>
+    <delete id="DeleteMyRoutine" parameterType="com.app.jelth.domain.model.MyRoutine">
+        DELETE FROM
+            my_workout_routine_list
+        WHERE
+            user_code = #{userCode}
+        AND my_routine_list_code = #{myRoutineListCode}
+    </delete>
+    <insert id="dayilRoutineAppend" parameterType="com.app.jelth.domain.model.DailyRecordM">
+        INSERT INTO daily_record_m(
+            daily_record_m_code,
+            user_code,
+            my_routine_list_code,
+            routine_type_a,
+            routine_seq,
+            routine_record_date
+        )VALUES(
+            get_random_uuid(),
+            #{userCode},
+            #{myRoutineListCode},
+            #{routineTypeA},
+            (SELECT count(*) FROM daily_record_m WHERE routine_record_date = #{routineRecordDate}),
+            #{routineRecordDate}
+       )
+    </insert>
+    <select id="getDailyRecordMList" parameterType="com.app.jelth.domain.model.DailyRecordM" resultType="com.app.jelth.domain.model.DailyRecordM">
+        SELECT
+            M.*,
+            my.routine_name
+        FROM daily_record_m M
+        LEFT JOIN my_workout_routine_list MY
+        ON M.my_routine_list_code = MY.my_routine_list_code
+        WHERE M.user_code = #{userCode}
+        AND M.routine_record_date = #{routineRecordDate}
+        ORDER BY m.routine_seq
+
+    </select>
+</mapper>

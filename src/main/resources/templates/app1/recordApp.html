@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+
+    <!-- Favicons -->
+    <link th:href="@{/img/white-report.png}" rel="icon">
+    <link th:href="@{/img/white-report.png}" rel="apple-touch-icon">
+    <!-- RESET CSS -->
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <!-- ICONS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+    <!-- JQUERY -->
+    <script th:src="@{/assets/jquery/jquery-3.7.0.min.js}"></script>
+    <script th:src="@{/assets/jquery/jquery-ui.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/assets/jquery/jquery-ui.min.css}">
+
+    <!-- Page JS -->
+    <script th:src="@{/js/app/WorkoutRecord.js}"></script>
+    
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" th:href="@{/css/calendarStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <title>JELTH</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=0"/>
+</head>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+    <!--<body>-->
+    <img th:src="@{/img/arrow_up.png}" alt="" style="display: none">
+    <div id="rightRoutineModifyModal" class="right-routine-modify-modal displayNone">
+        <div class="modify-modal-wrap">
+            <div class="modify-modal-header-box">
+                <div class="modify-modal-header">
+                    <span>운동명 변경</span>
+                </div>
+            </div>
+            <div class="routine-info-box">
+                <div class="routine-info join-info">
+                    <label for="routineName">운동명</label>
+                    <input type="text" placeholder="운동 명을 입력해 주세요." id="routineName" name="routineName">
+                </div>
+            </div>
+            <div class="modify-modal-modify-btn-box">
+                <button id="modifyOkBtn">확인</button>
+                <button id="modifyNoBtn">취소</button>
+            </div>
+        </div>
+    </div>
+    <div class="app-container">
+        <!-- Side Menu Bar Group Start-->
+        <div class="left-sidebar" style="position: fixed;" data-flag="off">
+            <div class="left-side-menu-wrap">
+                <img class="left-menu-close" th:src="@{/img/arrow_line_left.png}" alt="">
+                <ul>
+                    <li><span>운동기록</span></li>
+                    <li><span>랭킹보기</span></li>
+                    <li><span>마이페이지</span></li>
+                    <li><a href="/userLogout">로그아웃</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="right-sidebar" style=" position: fixed;" data-flag="off">
+            <div class="right-side-menu-wrap">
+                <div class="right-side-menu-top-box">
+                    <div class="modify-lever-wrap">
+                        <div class="modify-box">
+                            <div class="modify-img-wrap" data-flag="off">
+                                <img th:src="@{/img/white-edit.png}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="close-right-sidebar-box">
+                        <img th:src="@{/img/arrow_line_right.png}" alt="">
+                    </div>
+                </div>
+                <div class="routine-list-wrap">
+                    <!-- 운동 종목 리스트 START -->
+                    <div class="routine-list-box" name="routine_type_d" data-type-d="가슴">
+                        <div class="routine-title-wrap">
+                            <span>가슴</span>
+                            <button class="routine-list-add-btn displayNone" data-type-d="가슴"><img th:src="@{/img/C992F4-plus.png}"></button>
+                        </div>
+                        <div class="routine-items-wrap">
+
+                        </div>
+                    </div>
+                    <div class="routine-list-box" name="routine_type_d" data-type-d="어깨">
+                        <div class="routine-title-wrap">
+                            <span>어깨</span>
+                            <button class="routine-list-add-btn displayNone" data-type-d="어깨"><img th:src="@{/img/C992F4-plus.png}"></button>
+                        </div>
+                        <div class="routine-items-wrap">
+
+                        </div>
+                    </div>
+                    <div class="routine-list-box" name="routine_type_d" data-type-d="팔">
+                        <div class="routine-title-wrap">
+                            <span>팔</span>
+                            <button class="routine-list-add-btn displayNone" data-type-d="팔"><img th:src="@{/img/C992F4-plus.png}"></button>
+                        </div>
+                        <div class="routine-items-wrap">
+                        </div>
+                    </div>
+                    <div class="routine-list-box" name="routine_type_d" data-type-d="등">
+                        <div class="routine-title-wrap">
+                            <span>등</span>
+                            <button class="routine-list-add-btn displayNone" data-type-d="등"><img th:src="@{/img/C992F4-plus.png}"></button>
+                        </div>
+                        <div class="routine-items-wrap">
+                        </div>
+                    </div>
+                    <div class="routine-list-box" name="routine_type_d" data-type-d="코어">
+                        <div class="routine-title-wrap">
+                            <span>코어</span>
+                            <button class="routine-list-add-btn displayNone" data-type-d="코어"><img th:src="@{/img/C992F4-plus.png}"></button>
+                        </div>
+                        <div class="routine-items-wrap">
+                        </div>
+                    </div>
+                    <div class="routine-list-box" name="routine_type_d" data-type-d="하체">
+                        <div class="routine-title-wrap">
+                            <span>하체</span>
+                            <button class="routine-list-add-btn displayNone" data-type-d="하체"><img th:src="@{/img/C992F4-plus.png}"></button>
+                        </div>
+                        <div class="routine-items-wrap">
+                        </div>
+                    </div>
+                </div>
+                <div class="routine-list-footer">
+                    <div class="routine-list-footer-box">
+                        <button id="routineAppendBtnOK"><span>APPEND</span></button>
+<!--                        <button id="routineModifyBtnOK" class="displayNone"><span>SAVE</span></button>-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Side Menu Bar Group End-->
+        <div class="title-wrap">
+            <div class="menu-box btn-top">
+                <img class="left-menu-open" th:src="@{/img/menu-icon.png}" alt="" data-flag="off">
+            </div>
+            <div id="dateSaveBox" style="display: none;"></div>
+            <div class="month-box">
+                <img th:src="@{/img/arrow_left.png}" alt="" data-flag="before">
+                <b id="calendarMonthValue"></b>
+                <div class="month-year">
+                    <span id="calendarYearValue"></span>
+                    <span id="calendarMonthName"></span>
+                </div>
+                <img th:src="@{/img/arrow_right.png}" alt="" data-flag="next">
+            </div>
+        </div>
+        <div class="top-wrap">
+            <div class="calendar-wrap CARD">
+                <div class="calendarBody" id="calendarBody"></div>
+            </div>
+        </div>
+        <div class="middle-wrap">
+            <div class="Routine-btn-wrap">
+                <button type="button" id="routineAppendBtn">Routine Append</button>
+            </div>
+        </div>
+        <div class="bottom-wrap">
+            <div class="routine-wrap CARD" id="dailyRecordWrap">
+
+
+
+
+<!--                <div class="item-wrap" >-->
+<!--                    &lt;!&ndash; 운동 루틴 BOX START&ndash;&gt;-->
+<!--                    <div class="item-box">-->
+<!--                        <div class="routine-title" >-->
+<!--                            <div class="routine-icon">-->
+<!--                                <img th:src="@{/img/white-bench-press.png}" alt="">-->
+<!--                            </div>-->
+<!--                            <div class="routine-name">-->
+<!--                                <span>벤치프레스</span>-->
+<!--                            </div>-->
+<!--                            <div class="routine-arrow">-->
+<!--                                <img th:src="@{/img/arrow_down.png}" alt="" data-flag="down">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="routine-item-box">-->
+<!--                            <div class="routie-score-box">-->
+<!--                                <div class="routine-score">-->
+<!--                                    <div class="routine-done-checkbox form-check info-status"><input class="form-check-input login-checkbox" type="checkbox" name="" id=""></div>-->
+<!--                                    <div class="routine-set-num"><span data-set-num>1</span>세트</div>-->
+<!--                                    <div class="routine-weight"><span data-weight>100</span>Kg</div>-->
+<!--                                    <div class="routine-count"><span data-count>1</span>회</div>-->
+<!--                                    <div class="rountset-delete-btn"><i class="bi bi-trash"></i></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            <div class="routine-add-btn">-->
+<!--                                <button class="routine-set-add-btn" type="button">Add+</button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash; 운동 루틴 BOX END&ndash;&gt;-->
+<!--                </div>-->
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    let weekName = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    let monthName = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sep","Oct","Nov","Dec"];
+
+
+    let resultNowDate = new Date();
+    let resultDate = resultNowDate.getDate();
+    let resultMonth = resultNowDate.getMonth();
+    let resultYear = resultNowDate.getFullYear();
+    let resultDay = resultNowDate.getDay();
+
+    let eventStartTime;
+    let eventEndTime;
+
+    console.log("현재 선택 Date : "+resultYear+"년 "+(resultMonth+1)+"월 "+resultDate+"일 "+resultDay+"요일");
+    /**
+     * 페이지 로드 function
+     *
+     * 페이지 로드시 동작 됨.
+     */
+    // 오른쪽 클릭 방지
+    document.oncontextmenu = function() {
+        return false;
+    }
+    // 드래그 방지
+    var omitformtags = ["input", "textarea", "select"]
+    omitformtags = omitformtags.join("|")
+    function disableselect(e) {
+        if (omitformtags.indexOf(e.target.tagName.toLowerCase()) == -1)
+            return false
+    }
+    function reEnable() {
+        return true
+    }
+    if (typeof document.onselectstart != "undefined")
+        document.onselectstart = new Function("return false")
+    else {
+        document.onmousedown = disableselect
+        document.onmouseup = reEnable
+    }
+    //더블탭 확대 방지
+    document.ondblclick = function(e) {
+        e.preventDefault();
+    }
+
+    //달력 랜더링
+    calendarRendering(resultYear,resultMonth,resultDate,resultDay);
+    //현재 날짜 표시
+    calendarNowDateShow(resultYear,resultMonth,resultDate);
+
+
+    /** 달력 랜더링 함수
+     * 달력 날짜 리스트를 가져와서 calendarBody에 랜더링 해주는 함수
+     */
+    function calendarRendering(resultYear,resultMonth,resultDate,resultDay){
+
+        //달력표 날짜 가져오기
+        let calendarArry = calendarDateReturn(resultYear,resultMonth,resultDate);
+        //캘린더 돔 생성
+        for(let i=0; i<6; i++){
+            $weekBox = document.createElement('div');
+            $weekBox.classList.add('weekBox');
+            for(let j=0; j<7; j++){
+                $dateBox = document.createElement('div');
+                $dateBox.classList.add('dateBox');
+
+
+                $dateLabel = document.createElement('span');
+                $dateLabel.classList.add("dateLabel");
+
+                $dateBox.appendChild($dateLabel);
+                $weekBox.appendChild($dateBox);
+
+            }
+            document.querySelector(".calendarBody").appendChild($weekBox);
+        }
+        for(let i=0; i<calendarArry.length;i++){
+            if(resultMonth !== (calendarArry[i].month)){
+                document.querySelectorAll(".dateLabel")[i].style.color = 'rgb(100 100 100)';
+                if(resultMonth > calendarArry[i].month){
+                    document.querySelectorAll(".dateLabel")[i].dataset.monthFlag = 'before';
+                }else if(resultMonth < calendarArry[i].month){
+                    document.querySelectorAll(".dateLabel")[i].dataset.monthFlag = 'next';
+                }
+            }else{
+                //운동 날짜 표시하는 점 추가
+                let $attendanceFlag = document.createElement('span');
+                $attendanceFlag.innerHTML = 'ㅡ';
+                $attendanceFlag.classList.add('attendance-line');
+                document.querySelectorAll(".dateBox")[i].appendChild($attendanceFlag);
+            }
+            document.querySelectorAll(".dateLabel")[i].innerHTML = calendarArry[i].date;
+            document.querySelectorAll(".dateLabel")[i].dataset.month = calendarArry[i].month
+            document.querySelectorAll(".dateLabel")[i].setAttribute("data-value",calendarArry[i].date);
+        }
+        document.querySelector("#calendarMonthValue").innerHTML = resultMonth+1;
+        document.querySelector("#dateSaveBox").dataset.calendarYear = resultYear;
+        document.querySelector("#dateSaveBox").dataset.calendarMonth = resultMonth;
+        document.querySelector("#dateSaveBox").dataset.calendarDate = resultDate;
+        document.querySelector("#dateSaveBox").dataset.calendarDay = resultDay;
+        document.querySelector("#calendarYearValue").innerHTML = resultYear;
+        document.querySelector("#calendarMonthName").innerHTML = "."+monthName[resultMonth];
+
+    }
+
+    /** 6주 날짜를 뽑아주는 함수
+     * - 선택 날짜의 월을 참조하여 계산함
+     */
+    function calendarDateReturn(selectYear,selectMonth,selectDate){
+
+
+        //2월 처리
+        if(selectDate > 20){
+            selectDate = 1
+        }
+
+
+        let calendarArry = [];
+
+        //선택 날짜 (선택하지 않으면 현재 날짜)
+        let nowDate = new Date(selectYear,selectMonth,selectDate);
+
+
+
+        //test START
+        let testDate = new Date(selectYear,selectMonth+"",selectDate);
+        //test END
+
+
+
+        // // 2월은 2월 그대로 반영이 되어 -1월을 해줘야함
+        // if(selectMonth==1){
+        //     nowDate.setMonth(1);
+        //     nowDate.setMonth(1);
+        // }
+
+
+        //리턴할 데이터를 포장해줄 변수
+        var calendarData = {};
+
+        //첫주 전달에 해당하는 날짜 셋팅
+        nowDate.setDate(0);
+        for(let i=0; i<=nowDate.getDay();i++){
+            calendarData={
+                "date":nowDate.getDate()-i,
+                "month":nowDate.getMonth()
+            }
+            calendarArry.unshift(calendarData);
+        }
+        // nowDate.setDate(nowDate.getDate()+1);
+        nowDate.setDate(1);
+        let nowMonthFirstDate = nowDate;
+        nowMonthFirstDate.setDate(1);
+        nowMonthFirstDate.setMonth(nowMonthFirstDate.getMonth()+1);
+        let loofCount = 43-calendarArry.length;
+        for(let i=1; i!=loofCount;i++){
+            if(i === 1) {
+                calendarData ={
+                    "date":nowMonthFirstDate.getDate(),
+                    "month":nowMonthFirstDate.getMonth()
+                }
+
+                calendarArry.push(calendarData);
+            }else{
+                nowMonthFirstDate.setDate(nowMonthFirstDate.getDate()+1);
+                calendarData ={
+                    "date":nowMonthFirstDate.getDate(),
+                    "month":nowMonthFirstDate.getMonth()
+                }
+
+                calendarArry.push(calendarData);
+            }
+        }
+        return calendarArry;
+    }
+
+    //현재 날짜를 표시하는 함수
+    function calendarNowDateShow(nowYear,nowMonth,nowDate){
+        let dat = new Date();
+
+        //현재 날짜의 년,월이 맞지 않으면 함수 종료
+        if(dat.getFullYear() !== nowYear && dat.getMonth() !== nowMonth){
+            return ;
+        }
+        let dateLabel = document.querySelectorAll(".dateLabel");
+        for(let i=0;i<dateLabel.length;i++){
+            if(dateLabel[i].dataset.month == nowMonth && dateLabel[i].dataset.value == nowDate){
+                document.querySelectorAll(".dateLabel")[i].parentElement.classList.add("toDayDate");
+                document.querySelectorAll(".dateLabel")[i].parentElement.classList.add("selectedDate");
+
+                return;
+            }
+        }
+    }
+
+
+
+
+
+
+    // Jquery Start
+    $(function(){
+        $('.routine-item-box').hide();
+        // $('.right-sidebar').hide();
+        //전 달로 이동 처리
+        $(".month-box img[data-flag='before']").on("click",function(e){
+            beforeMonthEvIn(e);
+            $(".dateBox").on("click",function(e){
+                calendarSelectionEvIn(e);
+            });
+        });
+        //다음 달로 이동 처리
+        $(".month-box img[data-flag='next']").on("click",function(e){
+            nextMonthEvIn(e);
+            $(".dateBox").on("click",function(e){
+                calendarSelectionEvIn(e);
+            });
+        });
+        //달력 선택 일 표시하기
+        $(".dateBox").on("click",function(e){
+            calendarSelectionEvIn(e);
+        });
+
+
+
+        // open menu
+        $('.left-menu-open').click(function(e) {
+            leftSideMenuEv(e);
+        });
+        $('.left-menu-close').click(function(e){
+            leftSideMenuEv(e);
+        });
+        // 루틴 화살표 up 누르면 정보 숨기기
+        $('.routine-arrow img').click(function(e){
+            const flag = e.currentTarget.dataset.flag;
+            switch (flag){
+                case "down":
+
+                    break;
+                case "up":
+                    changeStyleOther(e,"closeRoutineItemBox");
+                    break;
+            }
+        });
+
+        // 루틴 세트 BOX 클릭시
+        $('.routine-score').click(function(e){
+            let target = e.currentTarget;
+            //체크박스에는 이벤트 발동 안되도록
+            if(e.target.tagName === 'INPUT' || e.target.tagName === 'I')return;
+            alert("세트정보를 입력 받을 수 있는 모달 창 만들기~");
+        });
+        // 투린 세트 삭제 버튼
+        $('.rountset-delete-btn i').click(function(e){
+            let target = e.currentTarget;
+            alert("세트정보를 삭제하는 기능 만들기");
+        });
+        //새로운 루틴 추가하는 버튼[right side bar open 우측 사이드바 열기]
+        $('#routineAppendBtn').click(function(e){
+            rightSideMenuEv(e);
+        });
+        $('.close-right-sidebar-box').click(function(e){
+            rightSideMenuEv(e);
+        });
+        //루틴 세트 추가 버튼
+        $('.routine-set-add-btn').click(function(e){
+            let $domBox = e.currentTarget.parentElement.parentElement;
+            let $scoreDom = e.currentTarget.parentElement.parentElement.querySelector(".routine-score").cloneNode(true);
+            e.currentTarget.parentElement.parentNode.querySelector('.routie-score-box').appendChild($scoreDom);
+        });
+        //우측 사이드메뉴 버튼 기능
+        $('.modify-img-wrap').click(function(e){
+            $('.modify-box').toggleClass('slide-on');
+            if(e.currentTarget.dataset.flag==='on'){
+                e.currentTarget.dataset.flag = 'off'
+                $('.routine-list-wrap').css('height','85vh')
+                $('.modify-img-wrap').css('transform','translate(0)');
+                $('.modify-img-wrap').css('transition','0.5s');
+                $('#routineAppendBtnOK').toggleClass("displayNone");
+                // $('#routineModifyBtnOK').toggleClass("displayNone");
+                $('.routine-item-sel-box .routine-list-checkbox').toggleClass("displayNone");
+                $('.routine-item-sel-box .routine-modify-btn-box').toggleClass("displayNone");
+                $('.routine-list-add-btn').toggleClass("displayNone");
+
+            }else{
+                e.currentTarget.dataset.flag = 'on'
+                $('.routine-list-wrap').css('height','93vh')
+                $('.modify-img-wrap').css('transform','translate(23px)');
+                $('.modify-img-wrap').css('transition','0.5s');
+                $('#routineAppendBtnOK').toggleClass("displayNone");
+                // $('#routineModifyBtnOK').toggleClass("displayNone");
+                $('.routine-item-sel-box .routine-list-checkbox').toggleClass("displayNone");
+                $('.routine-item-sel-box .routine-modify-btn-box').toggleClass("displayNone");
+                $('.routine-list-add-btn').toggleClass("displayNone");
+            }
+        });
+
+
+    });
+    // Jquery End
+    function beforeMonthEvIn(e){
+        $("#calendarBody").text("");
+        resultDate = document.querySelector("#dateSaveBox").dataset.calendarDate*1;
+        resultMonth = (document.querySelector("#dateSaveBox").dataset.calendarMonth*1)-1;
+        resultYear = document.querySelector("#dateSaveBox").dataset.calendarYear*1;
+        resultDay = document.querySelector("#dateSaveBox").dataset.calendarDay;
+        if(resultMonth < 0){
+            resultMonth = 11;
+            resultYear--;
+        }
+        calendarRendering(resultYear,resultMonth,resultDate,resultDay);
+        if(resultNowDate.getFullYear() === resultYear && resultNowDate.getMonth() === resultMonth){
+            calendarNowDateShow(resultNowDate.getFullYear(),resultNowDate.getMonth(),resultNowDate.getDate());
+        }
+
+    }
+    function nextMonthEvIn(e){
+
+        $("#calendarBody").text("");
+        resultDate = document.querySelector("#dateSaveBox").dataset.calendarDate*1;
+        resultMonth = (document.querySelector("#dateSaveBox").dataset.calendarMonth*1)+1;
+        resultYear = document.querySelector("#dateSaveBox").dataset.calendarYear*1;
+        resultDay = document.querySelector("#dateSaveBox").dataset.calendarDay;
+        if(resultMonth === 12){
+            resultMonth = 0;
+            resultYear++;
+        }
+        console.log(resultMonth);
+        calendarRendering(resultYear,resultMonth,resultDate,resultDay);
+        if(resultNowDate.getFullYear() === resultYear && resultNowDate.getMonth() === resultMonth){
+            calendarNowDateShow(resultNowDate.getFullYear(),resultNowDate.getMonth(),resultNowDate.getDate());
+        }
+
+    }
+    function calendarSelectionEvIn(e){
+        let flag = e.currentTarget.querySelector(".dateLabel").dataset.monthFlag;
+        if(flag === 'next' || flag === 'before'){
+            return;
+        }
+        $(".selectedDate").removeClass("selectedDate");
+        e.currentTarget.classList.add("selectedDate");
+        let data = {
+            routine_record_date:nowSelectDate()
+        }
+        AjaxRequest("dailyRoutineMasterRequest",data);
+
+
+    }
+    //선택한 운동 종목 표시하기
+    function routineSelectionEvIn(e){
+        //이미 펼쳐진 리스트라면 이벤트 종료
+        if(e.currentTarget.querySelector('.routine-arrow img').dataset.flag ==='up'){
+            $('.sel-routine-box').next().slideUp(100);
+            changeStyleOther(e,"closeRoutineItemBox");
+
+
+
+        }else{
+            $('.sel-routine-box').removeClass('sel-routine-box');
+            e.currentTarget.classList.add("sel-routine-box");
+            changeStyleOther(e,"routineSelect");
+            $('.routine-item-box').slideUp(10);
+            $('.sel-routine-box').next().slideDown(100);
+        };
+    }
+    /** 왼쪽 사이드 바 움직임 함수 (event객체,[flag])
+     *  flag 안넘겨 주면 태그에 있는 data-flag 사용
+     */
+    function leftSideMenuEv(e,flag){
+        flag = flag===undefined?document.querySelector('.left-sidebar').dataset.flag:flag;
+        if(flag === 'off'){
+            document.querySelector('.left-sidebar').dataset.flag = 'on';
+            document.querySelector('.left-sidebar').style.transition = '0.5s';
+            document.querySelector('.left-sidebar').style.transform = 'translate(0)';
+        }else{
+            document.querySelector('.left-sidebar').dataset.flag = 'off';
+            document.querySelector('.left-sidebar').style.transition = '0.5s';
+            document.querySelector('.left-sidebar').style.transform = 'translate(-100%)';
+        }
+    }
+    /** 우측 사이드 바 움직임 함수 (event객체,[flag])
+     *  flag 안넘겨 주면 태그에 있는 data-flag 사용
+     */
+    function rightSideMenuEv(e,flag){
+        flag = flag===undefined?document.querySelector('.right-sidebar').dataset.flag:flag;
+        const leftSideMenuWidth = document.querySelector('.right-side-menu-wrap').clientWidth;
+        if(flag === 'off'){
+            document.querySelector('.right-sidebar').dataset.flag = 'on';
+            document.querySelector('.right-sidebar').style.transition = '0.5s';
+            document.querySelector('.right-sidebar').style.transform = 'translate(0)';
+        }else{
+            document.querySelector('.right-sidebar').dataset.flag = 'off';
+            document.querySelector('.right-sidebar').style.transition = '0.5s';
+            document.querySelector('.right-sidebar').style.transform = 'translate(200%)';
+        }
+    }
+    //선택 클레스 부여되면 수행되는 기타 CSS 옵션들
+    function changeStyleOther(e,type){
+        switch(type){
+            case "routineSelect":
+                $(".routine-arrow img").attr("src","/img/arrow_down.png");
+                $(".routine-arrow img").attr("data-flag","down");
+                $(".sel-routine-box").next().removeClass("displayNone");
+                $(".sel-routine-box .routine-arrow img").attr("src","/img/arrow_up.png");
+                $(".sel-routine-box .routine-arrow img").attr("data-flag","up");
+                break;
+            case "closeRoutineItemBox":
+                $(".sel-routine-box .routine-arrow img").attr("src","/img/arrow_down.png");
+                $(".sel-routine-box .routine-arrow img").attr('data-flag','down');
+                $('.sel-routine-box').removeClass('sel-routine-box');
+                break;
+        }
+    }
+    // //루틴 삭제 style 처리
+    // function DeleteTodayRoutine(e){
+    //     eventStartTime=0;
+    //     eventEndTime=0;
+    //     if(!confirm("루틴을 삭제 할까요?")){
+    //         return;
+    //     }else{
+    //         e.currentTarget.remove();
+    //         alert("삭제 되었습니다");
+    //     }
+    // }
+</script>
+</html>
+
+
+
+
