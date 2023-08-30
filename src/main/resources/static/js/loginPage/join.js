@@ -1,14 +1,34 @@
 $(function(){
 
     $("#uId").change(function(e){
-        if('' !== $('#uId').val()){
+        if('' === $('#uId').val()){
             return;
         }
         let memberId = e.currentTarget.value;
         var idRegA = /^[A-za-z0-9]{5,15}/g;
         var idRegB = /^[A-za-z]/g;
 
-        if(!idRegA.test(memberId) || !idRegB.test(memberId)){
+        if(idRegA.test(memberId) || idRegB.test(memberId)){
+            $.ajax({
+                url:'/memberIdCheck',
+                data:memberId,
+                type:'post',
+                contentType:"application/json;charset=UTF-8",
+                success:function(res){
+                    if(res === "OK"){
+                        $('#uIdFlag').text("Check!");
+                        $('#uIdFlag').data('Flag','OK');
+                        $('#uIdFlag').css('color','blue');
+                    }else if(res === "NO"){
+                        $('#uIdFlag').text("이미 사용중인 아이디입니다.");
+                        $('#uIdFlag').data('Flag','NO');
+                        $('#uIdFlag').css('color','red');
+                    }
+                    return;
+                }
+            });
+
+        }else{
             alert("영문과 숫자만 사용해 주세요");
             $('#uId').val("");
             return;
@@ -16,24 +36,7 @@ $(function(){
 
 
 
-        $.ajax({
-            url:'/memberIdCheck',
-            data:memberId,
-            type:'post',
-            contentType:"application/json;charset=UTF-8",
-            success:function(res){
-                if(res === "OK"){
-                    $('#uIdFlag').text("Check!");
-                    $('#uIdFlag').data('Flag','OK');
-                    $('#uIdFlag').css('color','blue');
-                }else if(res === "NO"){
-                    $('#uIdFlag').text("이미 사용중인 아이디입니다.");
-                    $('#uIdFlag').data('Flag','NO');
-                    $('#uIdFlag').css('color','red');
-                }
-                return;
-            }
-        });
+
 
     });
     $("#uPw").change(function(e){
