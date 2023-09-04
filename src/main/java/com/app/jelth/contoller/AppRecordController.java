@@ -1,5 +1,6 @@
 package com.app.jelth.contoller;
 
+import com.app.jelth.domain.model.DailyRecordD;
 import com.app.jelth.domain.model.DailyRecordM;
 import com.app.jelth.domain.model.JelthUser;
 import com.app.jelth.domain.model.MyRoutine;
@@ -130,6 +131,36 @@ public class AppRecordController {
         calendarResult.put("calendarMonth",calendarMonth);
         List<HashMap<String, Object>> attendanceList = appRecordService.calendarLineRequest(calendarResult);
         return attendanceList;
+    }
+    @PostMapping("/InsertRoutineDetail")
+    @ResponseBody
+    public DailyRecordD InsertRoutineDetail(@RequestBody DailyRecordD dailyRecordD, @CookieValue(value ="loginToken", required = false) String loginToken){
+
+        dailyRecordD.setUserCode(getTokenInfoUserCode(loginToken));
+        DailyRecordD returnDailyRecordD = appRecordService.InsertRoutineDetail(dailyRecordD);
+        return returnDailyRecordD;
+    }
+    @PostMapping("/ModifyRoutineMaster")
+    @ResponseBody
+    public DailyRecordD ModifyRoutineMaster(@RequestBody DailyRecordD dailyRecordD, @CookieValue(value ="loginToken", required = false) String loginToken){
+
+        dailyRecordD.setUserCode(getTokenInfoUserCode(loginToken));
+
+        appRecordService.ModifyRoutineMaster(dailyRecordD);
+
+
+        return dailyRecordD;
+    }
+    @PostMapping("/dailyRecordDetailDelete")
+    @ResponseBody
+    public DailyRecordD dailyRecordDetailDelete(@RequestBody DailyRecordD dailyRecordD, @CookieValue(value ="loginToken", required = false) String loginToken){
+
+        dailyRecordD.setUserCode(getTokenInfoUserCode(loginToken));
+
+        DailyRecordD returnDailyRecordD = appRecordService.dailyRecordDetailDelete(dailyRecordD);
+
+
+        return returnDailyRecordD;
     }
     /**
      * 토큰에서 uId 꺼내는 함수

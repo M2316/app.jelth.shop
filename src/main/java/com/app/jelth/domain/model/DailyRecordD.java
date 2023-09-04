@@ -11,8 +11,8 @@ public class DailyRecordD extends BasicModel{
     private String dailyRecordMasterCode;
     private String userCode;
     private String myRoutineListCode;
-    private String workoutRoutineSeq;
-    private String workoutIterationsCount;
-    private String workoutSetWeight;
+    private Integer workoutRoutineSeq;
+    private Integer workoutIterationsCount;
+    private Integer workoutSetWeight;
     private String workoutDoneYn;
 }

@@ -95,10 +95,32 @@
         ORDER BY m.routine_seq
 
     </select>
+    <select id="getDailyRecordDList" parameterType="com.app.jelth.domain.model.DailyRecordM" resultType="com.app.jelth.domain.model.DailyRecordD">
+        SELECT
+            D.*
+        FROM daily_record_d D
+        WHERE user_code = #{userCode}
+        AND daily_record_master_code = #{dailyRecordMasterCode}
+        ORDER BY workout_routine_seq
+
+    </select>
     <delete id="DeleteRoutineMaster" parameterType="com.app.jelth.domain.model.DailyRecordM">
         DELETE FROM daily_record_m
         WHERE daily_record_master_code = #{dailyRecordMasterCode}
     </delete>
+    <update id="UpdateRoutineSeq" parameterType="com.app.jelth.domain.model.DailyRecordM">
+        update daily_record_m up
+        set routine_seq = sel.row_num
+            from (
+                select
+                    row_number() over(order by M.routine_seq) as row_num,
+                    M.routine_record_date,
+                    M.daily_record_master_code
+                from daily_record_m M
+                where M.routine_record_date = #{routineRecordDate}
+               ) sel
+        where up.daily_record_master_code = sel.daily_record_master_code
+    </update>
     <select id="calendarLineRequest" parameterType="HashMap" resultType="HashMap">
         select
             routine_record_date ,
@@ -109,4 +131,62 @@
         group by routine_record_date
         order by routine_record_date
     </select>
+    <insert id="InsertRoutineDetail" parameterType="com.app.jelth.domain.model.DailyRecordD">
+        INSERT INTO daily_record_d(
+            daily_record_detail_code,
+            daily_record_master_code,
+            user_code,
+            my_routine_list_code,
+            workout_routine_seq,
+            workout_iterations_count,
+            workout_set_weight,
+            workout_done_yn
+        )VALUES(
+            get_random_uuid(),
+            #{dailyRecordMasterCode},
+            #{userCode},
+            #{myRoutineListCode},
+            (SELECT count(*) FROM daily_record_d WHERE daily_record_master_code = #{dailyRecordMasterCode}),
+            #{workoutIterationsCount},
+            #{workoutSetWeight},
+            #{workoutDoneYn}
+       )
+        <selectKey keyColumn="daily_record_detail_code" keyProperty="dailyRecordDetailCode" order="AFTER" resultType="String">
+            SELECT
+                daily_record_detail_code
+            FROM daily_record_d
+            WHERE daily_record_master_code = #{dailyRecordMasterCode}
+            ORDER BY workout_routine_seq DESC
+            limit 1
+        </selectKey>
+
+    </insert>
+    <update id="ModifyRoutineMaster" parameterType="com.app.jelth.domain.model.DailyRecordD">
+        UPDATE daily_record_d SET
+            workout_iterations_count = #{workoutIterationsCount},
+            workout_set_weight = #{workoutSetWeight}
+        WHERE
+            daily_record_master_code = #{dailyRecordMasterCode}
+AND workout_routine_seq = #{workoutRoutineSeq}
+
+    </update>
+
+    <delete id="dailyRecordDetailDelete" parameterType="com.app.jelth.domain.model.DailyRecordD">
+        DELETE FROM daily_record_d
+        WHERE daily_record_detail_code = #{dailyRecordDetailCode}
+    </delete>
+
+    <update id="workoutRoutineSeqUpdate" parameterType="com.app.jelth.domain.model.DailyRecordD">
+        update daily_record_d up
+        set workout_routine_seq = sel.row_num
+            from (
+       	select
+       		row_number() over(order by D.workout_routine_seq) as row_num,
+       		D.daily_record_detail_code,
+     		D.daily_record_master_code
+       	from daily_record_d D
+       	where D.daily_record_master_code = #{dailyRecordMasterCode}
+       ) sel
+        where up.daily_record_detail_code = sel.daily_record_detail_code
+    </update>
 </mapper>

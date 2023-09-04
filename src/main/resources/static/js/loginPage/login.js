@@ -1,6 +1,7 @@
 
 $(function(){
     $('#userLoginBtn').click(function(e){
+        // document.body.webkitRequestFullscreen();
         const uIdFlag = document.querySelector("#userLoginForm [name='uId']").value.length === 0;
         const uPwFlag = document.querySelector("#userLoginForm [name='uPw']").value.length === 0;
         if(uPwFlag &&uPwFlag){

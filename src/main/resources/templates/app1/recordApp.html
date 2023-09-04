@@ -32,12 +32,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=0"/>
 </head>
 <body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+
     <!--<body>-->
     <img th:src="@{/img/arrow_up.png}" alt="" style="display: none">
     <div id="rightRoutineModifyModal" class="right-routine-modify-modal displayNone">
-        <div class="modify-modal-wrap">
-            <div class="modify-modal-header-box">
-                <div class="modify-modal-header">
+        <div class="modify-routine-modal-wrap">
+            <div class="modify-routine-modal-header-box">
+                <div class="modify-routine-modal-header">
                     <span>운동명 변경</span>
                 </div>
             </div>
@@ -54,6 +55,54 @@
         </div>
     </div>
     <div class="app-container">
+        <!-- Modify Modal START -->
+        <div class="routine-set-modify-modal-wrap displayNone">
+            <div class="routine-set-modify-modal-body-wrap">
+                <div class="routine-set-modify-modal-input-wrap">
+                    <div class="routine-set-modify-modal-input-title-box">
+                        <span>무게</span>
+                        <div class="routine-set-modify-modal-input">
+                            <input type="number" id="modifyModalWeight" value="40" name="Weight" ><label for="modifyModalWeight">Kg</label>
+                        </div>
+                    </div>
+                    <div class="routine-set-modify-modal-input-body-box">
+                        <div class="routine-set-modify-modal-img-box" data-input-type="minus">
+                            <img th:src="@{/img/C992F4-minus.png}" alt="">
+                        </div>
+                        <input type="range" id="rangeWeightInput" step="1" min="0" max="300" value="40" name="rangeWeight">
+                        <div class="routine-set-modify-modal-img-box" data-input-type="plus">
+                            <img th:src="@{/img/C992F4-plus.png}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="routine-set-modify-modal-input-wrap">
+                    <div class="routine-set-modify-modal-input-title-box">
+                        <span>횟수</span>
+                        <div class="routine-set-modify-modal-input">
+                            <input type="number" id="modifyModalCount" value="10" name="Count"><label for="modifyModalCount">회</label>
+                        </div>
+                    </div>
+                    <div class="routine-set-modify-modal-input-body-box">
+                        <div class="routine-set-modify-modal-img-box" data-input-type="minus">
+                            <img th:src="@{/img/C992F4-minus.png}" alt="">
+                        </div>
+                        <input type="range" id="rangeCountInput" step="1" min="0" max="20" value="10" name="rangeCount">
+                        <div class="routine-set-modify-modal-img-box" data-input-type="plus">
+                            <img th:src="@{/img/C992F4-plus.png}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="routine-set-modify-modal-btn-wrap">
+                    <div class="routine-set-modify-modal-btn-box">
+                        <button id="routineModifyOkBtn">확인</button>
+                    </div>
+                    <div class="routine-set-modify-modal-btn-box">
+                        <button id="routineModifyCancelBtn">취소</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modify Modal END -->
         <!-- Side Menu Bar Group Start-->
         <div class="left-sidebar" style="position: fixed;" data-flag="off">
             <div class="left-side-menu-wrap">
@@ -219,6 +268,7 @@
 </body>
 
 <script>
+
     let weekName = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
     let monthName = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sep","Oct","Nov","Dec"];
 
@@ -285,7 +335,9 @@
             async: false,
             data:JSON.stringify(data),
             success:function(res){
-
+                resultYear = resultYear * 1;
+                resultMonth = resultMonth * 1;
+                resultDate = resultDate * 1;
                 $("#calendarBody").text("");
                 //달력표 날짜 가져오기
                 let calendarArry = calendarDateReturn(resultYear,resultMonth,resultDate);
@@ -338,6 +390,7 @@
                 document.querySelector("#dateSaveBox").dataset.calendarDay = resultDay;
                 document.querySelector("#calendarYearValue").innerHTML = resultYear;
                 document.querySelector("#calendarMonthName").innerHTML = "."+monthName[resultMonth];
+                document.querySelector('[data-value='+'"'+resultDate+'"'+'][data-month='+'"'+resultMonth+'"'+']').parentElement.classList.add('selectedDate');
                 $(".dateBox").on("click",function(e){
                     calendarSelectionEvIn(e);
                 });
@@ -445,6 +498,8 @@
 
     // Jquery Start
     $(function(){
+
+
         $('.routine-item-box').hide();
         // $('.right-sidebar').hide();
         //전 달로 이동 처리
@@ -454,10 +509,6 @@
         //다음 달로 이동 처리
         $(".month-box img[data-flag='next']").on("click",function(e){
             nextMonthEvIn(e);
-        });
-        //달력 선택 일 표시하기
-        $(".dateBox").on("click",function(e){
-            calendarSelectionEvIn(e);
         });
 
 
@@ -483,17 +534,8 @@
         });
 
         // 루틴 세트 BOX 클릭시
-        $('.routine-score').click(function(e){
-            let target = e.currentTarget;
-            //체크박스에는 이벤트 발동 안되도록
-            if(e.target.tagName === 'INPUT' || e.target.tagName === 'I')return;
-            alert("세트정보를 입력 받을 수 있는 모달 창 만들기~");
-        });
-        // 투린 세트 삭제 버튼
-        $('.rountset-delete-btn i').click(function(e){
-            let target = e.currentTarget;
-            alert("세트정보를 삭제하는 기능 만들기");
-        });
+
+
         //새로운 루틴 추가하는 버튼[right side bar open 우측 사이드바 열기]
         $('#routineAppendBtn').click(function(e){
             rightSideMenuEv(e);
@@ -511,23 +553,21 @@
         $('.modify-img-wrap').click(function(e){
             $('.modify-box').toggleClass('slide-on');
             if(e.currentTarget.dataset.flag==='on'){
-                e.currentTarget.dataset.flag = 'off'
-                $('.routine-list-wrap').css('height','85vh')
+                e.currentTarget.dataset.flag = 'off';
+                $('.routine-list-footer-box').toggleClass('displayNone');
                 $('.modify-img-wrap').css('transform','translate(0)');
                 $('.modify-img-wrap').css('transition','0.5s');
                 $('#routineAppendBtnOK').toggleClass("displayNone");
-                // $('#routineModifyBtnOK').toggleClass("displayNone");
                 $('.routine-item-sel-box .routine-list-checkbox').toggleClass("displayNone");
                 $('.routine-item-sel-box .routine-modify-btn-box').toggleClass("displayNone");
                 $('.routine-list-add-btn').toggleClass("displayNone");
 
             }else{
-                e.currentTarget.dataset.flag = 'on'
-                $('.routine-list-wrap').css('height','93vh')
+                e.currentTarget.dataset.flag = 'on';
+                $('.routine-list-footer-box').toggleClass('displayNone');
                 $('.modify-img-wrap').css('transform','translate(23px)');
                 $('.modify-img-wrap').css('transition','0.5s');
                 $('#routineAppendBtnOK').toggleClass("displayNone");
-                // $('#routineModifyBtnOK').toggleClass("displayNone");
                 $('.routine-item-sel-box .routine-list-checkbox').toggleClass("displayNone");
                 $('.routine-item-sel-box .routine-modify-btn-box').toggleClass("displayNone");
                 $('.routine-list-add-btn').toggleClass("displayNone");
@@ -629,6 +669,9 @@
             document.querySelector('.right-sidebar').dataset.flag = 'off';
             document.querySelector('.right-sidebar').style.transition = '0.5s';
             document.querySelector('.right-sidebar').style.transform = 'translate(200%)';
+            document.querySelectorAll('.routine-list-checkbox input').forEach((e)=>{e.checked = false})
+            appendRoutineList=[];
+
         }
     }
     //선택 클레스 부여되면 수행되는 기타 CSS 옵션들
@@ -648,19 +691,10 @@
                 break;
         }
     }
-    // //루틴 삭제 style 처리
-    // function DeleteTodayRoutine(e){
-    //     eventStartTime=0;
-    //     eventEndTime=0;
-    //     if(!confirm("루틴을 삭제 할까요?")){
-    //         return;
-    //     }else{
-    //         e.currentTarget.remove();
-    //         alert("삭제 되었습니다");
-    //     }
-    // }
+
 </script>
 </html>
+
 
 
 

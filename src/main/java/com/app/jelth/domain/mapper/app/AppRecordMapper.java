@@ -1,5 +1,6 @@
 package com.app.jelth.domain.mapper.app;
 
+import com.app.jelth.domain.model.DailyRecordD;
 import com.app.jelth.domain.model.DailyRecordM;
 import com.app.jelth.domain.model.MyRoutine;
 import org.apache.ibatis.annotations.Mapper;
@@ -27,6 +28,18 @@ public interface AppRecordMapper {
     List<DailyRecordM> getDailyRecordMList(DailyRecordM dailyRecordM);
 
     void DeleteRoutineMaster(DailyRecordM dailyRecordM);
+    void UpdateRoutineSeq(DailyRecordM dailyRecordM);
 
     List<HashMap<String, Object>> calendarLineRequest(Map<String, Object> calendarResult);
+
+    int InsertRoutineDetail(DailyRecordD dailyRecordD);
+
+    List<DailyRecordD> getDailyRecordDList(DailyRecordM dailyRecordM);
+
+    void ModifyRoutineMaster(DailyRecordD dailyRecordD);
+
+    int dailyRecordDetailDelete(DailyRecordD dailyRecordD);
+
+    void workoutRoutineSeqUpdate(DailyRecordD dailyRecordD);
 }
+

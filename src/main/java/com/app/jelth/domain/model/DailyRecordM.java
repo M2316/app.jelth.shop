@@ -18,5 +18,5 @@ public class DailyRecordM extends BasicModel{
     private String routineSeq;
     private String routineRecordDate;
     private String routineName;
-    private List<DailyRecordD> DailyRecordDList;
+    private List<DailyRecordD> DailyRecordDetailList;
 }

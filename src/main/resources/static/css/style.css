@@ -310,6 +310,7 @@ a{
 
 .top-wrap{
     height: 37vh;
+    max-height: 240px;
     display: flex;
     align-items: center;
 }
@@ -417,13 +418,28 @@ a{
     width: 85%;
     border: var(--main-impact-color) solid 1px;
 }
+.routine-score-box{
+    background: #484848;
+}
 .routine-score{
     display: flex;
-    background: #484848;
+    margin-top: 10px;
     justify-content: space-around;
     align-items: center;
 }
-.rountset-delete-btn i{
+.routine-score:last-child{
+    margin-bottom: 10px;
+}
+.routine-set-num{
+    width: 50px;
+}
+.routine-weight{
+    width: 70px;
+}
+.routine-count{
+    width: 60px;
+}
+.routine-delete-btn i{
     font-size: 1.5em;
 }
 
