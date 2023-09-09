@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
@@ -76,9 +76,24 @@
 </body>
 
 <script th:inline="javascript">
+    let browserType = window.navigator.userAgent.toLowerCase();
+
+    //모바일 호환성 증가를 위해 height size 동적 변경
+    if(browserType.includes("safari") && !browserType.includes("whale") && !browserType.includes("windows")){
+        let infoMsg = "Jelth Web App은 Naver Whale 브라우저를 권장합니다. 설치를 위해 이동합니다.";
+        alert(infoMsg);
+        location.href = "https://whale.naver.com";
+    }else if(browserType.includes("whale")){
+
+    }
+    //모바일 화면에서 하단 브라우저로 가려지는 부분을 해결하기 위함 END
+    // 추후 브라우저 호환성 업데이트가 필요함 ...
+
+
     let msg = [[${msg}]];
     if(msg !== null && msg.length > 0){
         alert(msg);
     }
+
 </script>
 </html>

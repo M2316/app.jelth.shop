@@ -72,6 +72,9 @@
             user_code,
             my_routine_list_code,
             routine_type_a,
+            routine_type_b,
+            routine_type_c,
+            routine_type_d,
             routine_seq,
             routine_record_date
         )VALUES(
@@ -79,6 +82,9 @@
             #{userCode},
             #{myRoutineListCode},
             #{routineTypeA},
+            #{routineTypeB},
+            #{routineTypeC},
+            #{routineTypeD},
             (SELECT count(*) FROM daily_record_m WHERE routine_record_date = #{routineRecordDate}),
             #{routineRecordDate}
        )
@@ -106,7 +112,9 @@
     </select>
     <delete id="DeleteRoutineMaster" parameterType="com.app.jelth.domain.model.DailyRecordM">
         DELETE FROM daily_record_m
-        WHERE daily_record_master_code = #{dailyRecordMasterCode}
+        WHERE daily_record_master_code = #{dailyRecordMasterCode};
+        DELETE FROM daily_record_d
+        WHERE daily_record_master_code = #{dailyRecordMasterCode};
     </delete>
     <update id="UpdateRoutineSeq" parameterType="com.app.jelth.domain.model.DailyRecordM">
         update daily_record_m up
@@ -146,7 +154,7 @@
             #{dailyRecordMasterCode},
             #{userCode},
             #{myRoutineListCode},
-            (SELECT count(*) FROM daily_record_d WHERE daily_record_master_code = #{dailyRecordMasterCode}),
+            (SELECT (count(*)+1) FROM daily_record_d WHERE daily_record_master_code = #{dailyRecordMasterCode}),
             #{workoutIterationsCount},
             #{workoutSetWeight},
             #{workoutDoneYn}
@@ -161,13 +169,21 @@
         </selectKey>
 
     </insert>
-    <update id="ModifyRoutineMaster" parameterType="com.app.jelth.domain.model.DailyRecordD">
+    <update id="ModifyRoutineDetail" parameterType="com.app.jelth.domain.model.DailyRecordD">
         UPDATE daily_record_d SET
             workout_iterations_count = #{workoutIterationsCount},
             workout_set_weight = #{workoutSetWeight}
+            <if test='workoutDoneYn != null and workoutDoneYn != " "'>
+                ,workout_done_yn = #{workoutDoneYn}
+            </if>
         WHERE
             daily_record_master_code = #{dailyRecordMasterCode}
-AND workout_routine_seq = #{workoutRoutineSeq}
+        <if test='workoutRoutineSeq != null and workoutRoutineSeq != " "'>
+            AND workout_routine_seq = #{workoutRoutineSeq}
+        </if>
+        <if test='dailyRecordDetailCode != null and dailyRecordDetailCode != " "'>
+            AND daily_record_detail_code = #{dailyRecordDetailCode}
+        </if>
 
     </update>
 

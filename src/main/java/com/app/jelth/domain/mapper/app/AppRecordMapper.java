@@ -36,7 +36,7 @@ public interface AppRecordMapper {
 
     List<DailyRecordD> getDailyRecordDList(DailyRecordM dailyRecordM);
 
-    void ModifyRoutineMaster(DailyRecordD dailyRecordD);
+    void ModifyRoutineDetail(DailyRecordD dailyRecordD);
 
     int dailyRecordDetailDelete(DailyRecordD dailyRecordD);
 

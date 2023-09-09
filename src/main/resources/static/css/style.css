@@ -344,6 +344,8 @@ a{
     color: var(--main-impact-color);
     width: 1.5em;
     height: 1.5em;
+    min-width: 30px;
+    min-height: 30px;
 }
 .Routine-btn-wrap{
     border-radius: 50px;

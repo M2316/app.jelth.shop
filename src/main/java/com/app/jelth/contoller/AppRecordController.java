@@ -140,31 +140,31 @@ public class AppRecordController {
         DailyRecordD returnDailyRecordD = appRecordService.InsertRoutineDetail(dailyRecordD);
         return returnDailyRecordD;
     }
-    @PostMapping("/ModifyRoutineMaster")
+    @PostMapping("/ModifyRoutineDetail")
     @ResponseBody
-    public DailyRecordD ModifyRoutineMaster(@RequestBody DailyRecordD dailyRecordD, @CookieValue(value ="loginToken", required = false) String loginToken){
+    public DailyRecordD ModifyRoutineDetail(@RequestBody DailyRecordD dailyRecordD, @CookieValue(value ="loginToken", required = false) String loginToken){
 
         dailyRecordD.setUserCode(getTokenInfoUserCode(loginToken));
 
-        appRecordService.ModifyRoutineMaster(dailyRecordD);
+        appRecordService.ModifyRoutineDetail(dailyRecordD);
 
 
         return dailyRecordD;
     }
     @PostMapping("/dailyRecordDetailDelete")
     @ResponseBody
-    public DailyRecordD dailyRecordDetailDelete(@RequestBody DailyRecordD dailyRecordD, @CookieValue(value ="loginToken", required = false) String loginToken){
+    public List<DailyRecordD> dailyRecordDetailDelete(@RequestBody DailyRecordD dailyRecordD, @CookieValue(value ="loginToken", required = false) String loginToken){
 
         dailyRecordD.setUserCode(getTokenInfoUserCode(loginToken));
 
-        DailyRecordD returnDailyRecordD = appRecordService.dailyRecordDetailDelete(dailyRecordD);
+        List<DailyRecordD> returnDailyRecordD = appRecordService.dailyRecordDetailDelete(dailyRecordD);
 
 
         return returnDailyRecordD;
     }
     /**
      * 토큰에서 uId 꺼내는 함수
-     * @Params String loginToken 로그인 정보가 담긴 토큰
+     * @Params String loginToken 로그인 정보가 담긴 토큰`
      */
     private String getTokenInfoUserId(String loginToken){
         return JwtUtil.getUserId(loginToken.split("/")[1],secretKey);

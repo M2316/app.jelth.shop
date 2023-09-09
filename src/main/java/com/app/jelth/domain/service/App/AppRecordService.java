@@ -36,6 +36,7 @@ public class AppRecordService {
     }
 
     public void DeleteMyRoutine(MyRoutine myRoutine) {
+
         appRecordMapper.DeleteMyRoutine(myRoutine);
     }
 
@@ -71,15 +72,20 @@ public class AppRecordService {
 
     }
 
-    public DailyRecordD ModifyRoutineMaster(DailyRecordD dailyRecordD) {
-        appRecordMapper.ModifyRoutineMaster(dailyRecordD);
+    public DailyRecordD ModifyRoutineDetail(DailyRecordD dailyRecordD) {
+        appRecordMapper.ModifyRoutineDetail(dailyRecordD);
         return dailyRecordD;
     }
 
-    public DailyRecordD dailyRecordDetailDelete(DailyRecordD dailyRecordD) {
+    public List<DailyRecordD> dailyRecordDetailDelete(DailyRecordD dailyRecordD) {
         appRecordMapper.dailyRecordDetailDelete(dailyRecordD);
         appRecordMapper.workoutRoutineSeqUpdate(dailyRecordD);
 
-        return dailyRecordD;
+        DailyRecordM dailyRecordM = new DailyRecordM();
+        dailyRecordM.setUserCode(dailyRecordD.getUserCode());
+        dailyRecordM.setDailyRecordMasterCode(dailyRecordD.getDailyRecordMasterCode());
+        return appRecordMapper.getDailyRecordDList(dailyRecordM);
+
+
     }
 }

@@ -83,6 +83,8 @@
   display: flex;
   justify-content: center;
   padding-top: 135px;
+  position: absolute;
+  top: 0;
 }
 .routine-set-modify-modal-body-wrap{
   display: flex;
@@ -226,6 +228,7 @@ div.left-sidebar div.left-side-menu-wrap ul li:hover {
   background-color: #000000ab;
   transform-origin: right;
   width: 100%;
+  height: calc(var(--vh,1vh) * 100vh);
   transform: translate(200%);
   z-index: 1000;
   margin: 0;
@@ -378,6 +381,10 @@ div.left-sidebar div.left-side-menu-wrap ul li:hover {
 
 .routine-list-checkbox input{
   margin-top: 0 !important;
+  width: 1.5em;
+  height: 1.5em;
+  min-width: 30px;
+  min-height: 30px;
 }
 .routine-list-checkbox input, .routine-modify-btn img{
   width: 4vh;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
@@ -31,79 +31,34 @@
     <title>JELTH</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=0"/>
 </head>
-<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+<!--&lt;!&ndash;<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false"-->
+<body style="overflow-y: scroll">
 
     <!--<body>-->
     <img th:src="@{/img/arrow_up.png}" alt="" style="display: none">
-    <div id="rightRoutineModifyModal" class="right-routine-modify-modal displayNone">
-        <div class="modify-routine-modal-wrap">
-            <div class="modify-routine-modal-header-box">
-                <div class="modify-routine-modal-header">
-                    <span>운동명 변경</span>
-                </div>
-            </div>
-            <div class="routine-info-box">
-                <div class="routine-info join-info">
-                    <label for="routineName">운동명</label>
-                    <input type="text" placeholder="운동 명을 입력해 주세요." id="routineName" name="routineName">
-                </div>
-            </div>
-            <div class="modify-modal-modify-btn-box">
-                <button id="modifyOkBtn">확인</button>
-                <button id="modifyNoBtn">취소</button>
-            </div>
-        </div>
-    </div>
+
     <div class="app-container">
-        <!-- Modify Modal START -->
-        <div class="routine-set-modify-modal-wrap displayNone">
-            <div class="routine-set-modify-modal-body-wrap">
-                <div class="routine-set-modify-modal-input-wrap">
-                    <div class="routine-set-modify-modal-input-title-box">
-                        <span>무게</span>
-                        <div class="routine-set-modify-modal-input">
-                            <input type="number" id="modifyModalWeight" value="40" name="Weight" ><label for="modifyModalWeight">Kg</label>
-                        </div>
-                    </div>
-                    <div class="routine-set-modify-modal-input-body-box">
-                        <div class="routine-set-modify-modal-img-box" data-input-type="minus">
-                            <img th:src="@{/img/C992F4-minus.png}" alt="">
-                        </div>
-                        <input type="range" id="rangeWeightInput" step="1" min="0" max="300" value="40" name="rangeWeight">
-                        <div class="routine-set-modify-modal-img-box" data-input-type="plus">
-                            <img th:src="@{/img/C992F4-plus.png}" alt="">
-                        </div>
+
+        <!-- Side Menu Bar Group Start-->
+        <div id="rightRoutineModifyModal" class="right-routine-modify-modal displayNone">
+            <div class="modify-routine-modal-wrap">
+                <div class="modify-routine-modal-header-box">
+                    <div class="modify-routine-modal-header">
+                        <span>운동명 변경</span>
                     </div>
                 </div>
-                <div class="routine-set-modify-modal-input-wrap">
-                    <div class="routine-set-modify-modal-input-title-box">
-                        <span>횟수</span>
-                        <div class="routine-set-modify-modal-input">
-                            <input type="number" id="modifyModalCount" value="10" name="Count"><label for="modifyModalCount">회</label>
-                        </div>
-                    </div>
-                    <div class="routine-set-modify-modal-input-body-box">
-                        <div class="routine-set-modify-modal-img-box" data-input-type="minus">
-                            <img th:src="@{/img/C992F4-minus.png}" alt="">
-                        </div>
-                        <input type="range" id="rangeCountInput" step="1" min="0" max="20" value="10" name="rangeCount">
-                        <div class="routine-set-modify-modal-img-box" data-input-type="plus">
-                            <img th:src="@{/img/C992F4-plus.png}" alt="">
-                        </div>
+                <div class="routine-info-box">
+                    <div class="routine-info join-info">
+                        <label for="routineName">운동명</label>
+                        <input type="text" placeholder="운동 명을 입력해 주세요." id="routineName" name="routineName">
                     </div>
                 </div>
-                <div class="routine-set-modify-modal-btn-wrap">
-                    <div class="routine-set-modify-modal-btn-box">
-                        <button id="routineModifyOkBtn">확인</button>
-                    </div>
-                    <div class="routine-set-modify-modal-btn-box">
-                        <button id="routineModifyCancelBtn">취소</button>
-                    </div>
+                <div class="modify-modal-modify-btn-box">
+                    <button id="modifyOkBtn">확인</button>
+                    <button id="modifyNoBtn">취소</button>
                 </div>
             </div>
         </div>
-        <!-- Modify Modal END -->
-        <!-- Side Menu Bar Group Start-->
         <div class="left-sidebar" style="position: fixed;" data-flag="off">
             <div class="left-side-menu-wrap">
                 <img class="left-menu-close" th:src="@{/img/arrow_line_left.png}" alt="">
@@ -263,6 +218,54 @@
 
             </div>
         </div>
+        <!-- Modify Modal START -->
+        <div class="routine-set-modify-modal-wrap displayNone">
+            <div class="routine-set-modify-modal-body-wrap">
+                <div class="routine-set-modify-modal-input-wrap">
+                    <div class="routine-set-modify-modal-input-title-box">
+                        <span>무게</span>
+                        <div class="routine-set-modify-modal-input">
+                            <input type="number" id="modifyModalWeight" value="40" name="Weight" ><label for="modifyModalWeight">Kg</label>
+                        </div>
+                    </div>
+                    <div class="routine-set-modify-modal-input-body-box">
+                        <div class="routine-set-modify-modal-img-box" data-input-type="minus">
+                            <img th:src="@{/img/C992F4-minus.png}" alt="">
+                        </div>
+                        <input type="range" id="rangeWeightInput" step="10" min="0" max="200" value="40" name="rangeWeight">
+                        <div class="routine-set-modify-modal-img-box" data-input-type="plus">
+                            <img th:src="@{/img/C992F4-plus.png}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="routine-set-modify-modal-input-wrap">
+                    <div class="routine-set-modify-modal-input-title-box">
+                        <span>횟수</span>
+                        <div class="routine-set-modify-modal-input">
+                            <input type="number" id="modifyModalCount" value="10" name="Count"><label for="modifyModalCount">회</label>
+                        </div>
+                    </div>
+                    <div class="routine-set-modify-modal-input-body-box">
+                        <div class="routine-set-modify-modal-img-box" data-input-type="minus">
+                            <img th:src="@{/img/C992F4-minus.png}" alt="">
+                        </div>
+                        <input type="range" id="rangeCountInput" step="1" min="0" max="20" value="10" name="rangeCount">
+                        <div class="routine-set-modify-modal-img-box" data-input-type="plus">
+                            <img th:src="@{/img/C992F4-plus.png}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="routine-set-modify-modal-btn-wrap">
+                    <div class="routine-set-modify-modal-btn-box">
+                        <button id="routineModifyOkBtn">확인</button>
+                    </div>
+                    <div class="routine-set-modify-modal-btn-box">
+                        <button id="routineModifyCancelBtn">취소</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modify Modal END -->
     </div>
 
 </body>

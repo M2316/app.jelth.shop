@@ -8,22 +8,24 @@
 /* 0. Page Ready Function
  * - 이벤트를 jquery로 처리
  */
+
+
 let appendRoutineList=[];
+
+
 $(function(){
     let browserType = window.navigator.userAgent.toLowerCase();
-    // alert("Mobile Type : "+browserType);
-    //모바일 호환성 증가를 위해 height size 동적 변경
-    if(browserType.includes("safari") && !browserType.includes("whale") && !browserType.includes("windows")){
-        // alert('사파리 적용');
-       document.querySelector(".bottom-wrap").style.maxHeight = "calc(48vh - 70px)";
-       document.querySelector('.right-sidebar').style.maxHeight = "calc(100vh - 80px)";
-       document.querySelector('.routine-list-wrap').style.height = "calc(85% - 80px)";
-        document.querySelector('.left-sidebar').style.maxHeight = "calc(100vh - 80px)";
-        document.querySelector('.left-side-menu-wrap').style.maxHeight = "calc(100% - 200px)";
-    }else if(browserType.includes("whale")){
-        // alert('웨일 적용');
 
-    }
+    //모바일 호환성 증가를 위해 height size 동적 변경
+    // if(browserType.includes("safari") && !browserType.includes("whale") && !browserType.includes("windows")){
+    //     let infoMsg = "Jelth Web App은 Naver Whale 브라우저를 권장합니다. 설치를 위해 이동합니다.";
+    //     alert(infoMsg);
+    //     location.href = "https://whale.naver.com";
+    // }else if(browserType.includes("whale")){
+    //
+    // }
+    //모바일 화면에서 하단 브라우저로 가려지는 부분을 해결하기 위함 END
+    // 추후 브라우저 호환성 업데이트가 필요함 ...
 
 
 
@@ -57,20 +59,6 @@ function pageElementEventAdd(flag){
         $(flag).off();
     }
     switch (flag){
-
-        //case "All":
-        case ".dateBox":
-            $(".dateBox").on("click",debounce((e)=>{
-                AjaxRequest("selDateRoutineRequest");
-            }, 300));
-            if(flag === ".dateBox") break;
-
-        case "All":
-        case "#routineAppendBtn":
-            $("#routineAppendBtn").click((e)=>{
-
-            });
-            if(flag === "#routineAppendBtn") break;
         case "All":
         case ".routine-modify-btn":
             $(".routine-modify-btn").on("click",(e)=>{
@@ -140,7 +128,6 @@ function pageElementEventAdd(flag){
                 }
             });
             if(".routine-list-input" === flag) break;
-
         case "All":
         case "#routineAppendBtnOK":
             $('#routineAppendBtnOK').on("click",(e)=>{
@@ -225,11 +212,13 @@ function pageElementEventAdd(flag){
                 let data ={
                     daily_record_master_code:masterDataDOM.dataset.dailyRecordMasterCode,
                     my_routine_list_code:masterDataDOM.dataset.myRoutineListCode,
-                    workout_routine_seq:$routineScoreList.querySelectorAll('.routine-score').length,
+                    workout_routine_seq:$routineScoreList.querySelector('.routine-score:last-child').dataset.setNum,
                     workout_iterations_count:$LastCopyDom.querySelector('.routine-count span').dataset.count,
                     workout_set_weight:$LastCopyDom.querySelector('.routine-weight span').dataset.weight,
-                    workout_done_yn:$LastCopyDom.querySelector('input').value == 'on' ? 'Y':'N'
+                    workout_done_yn:'N'
                 };
+
+
                 AjaxRequest("InsertRoutineDetail",data);
             });
             if(".routine-set-add-btn" === flag) break;
@@ -281,10 +270,37 @@ function pageElementEventAdd(flag){
 
                 $('.routine-set-modify-modal-wrap').toggleClass('displayNone');
                 document.querySelector('.routine-set-modify-modal-body-wrap').dataset.dailyRecordMasterCode = e.currentTarget.dataset.dailyRecordMasterCode;
+
                 document.querySelector('.routine-set-modify-modal-body-wrap').dataset.setNum = e.currentTarget.dataset.setNum;
                 document.querySelector('.routine-set-modify-modal-body-wrap').dataset.dailyRecordDetailCode = e.currentTarget.dataset.dailyRecordDetailCode;
+
+
+                document.querySelector('#modifyModalWeight').value = e.currentTarget.querySelector('[data-weight]').dataset.weight;
+                document.querySelector('#rangeWeightInput').value = e.currentTarget.querySelector('[data-weight]').dataset.weight;
+
+                document.querySelector('#modifyModalCount').value = e.currentTarget.querySelector('[data-count]').dataset.count;
+                document.querySelector('#rangeCountInput').value = e.currentTarget.querySelector('[data-count]').dataset.count;
+
+
             });
             if(".routine-score" === flag) break;
+        case "All":
+        case "[data-workout-done-yn]":
+            $('[data-workout-done-yn]').click(function(e){
+
+                let $targetDOM = e.currentTarget.parentElement.parentElement;
+                let data ={
+                    daily_record_detail_code:$targetDOM.dataset.dailyRecordDetailCode,
+                    daily_record_master_code:$targetDOM.dataset.dailyRecordMasterCode,
+                    workout_iterations_count:$targetDOM.querySelector('[data-count]').dataset.count,
+                    workout_set_weight:$targetDOM.querySelector('[data-weight]').dataset.weight,
+                    workout_done_yn:YnConvertFunction(e.currentTarget.checked),
+
+                };
+                AjaxRequest('ModifyRoutineDetail',data);
+
+            });
+            if("[data-workout-done-yn]" === flag) break;
         case "All":
         case "#routineModifyCancelBtn":
             $('#routineModifyCancelBtn').click(function(e){
@@ -294,11 +310,11 @@ function pageElementEventAdd(flag){
         case "All":
         case "#rangeWeightInput":
         case "#rangeCountInput":
-            $('#rangeWeightInput').change(function(e){
+            $('#rangeWeightInput').on('input',function(e){
                 console.log(e.currentTarget.value);
                 $('#modifyModalWeight').val(e.currentTarget.value);
             });
-            $('#rangeCountInput').change(function(e){
+            $('#rangeCountInput').on('input',function(e){
                 console.log(e.currentTarget.value);
                 $('#modifyModalCount').val(e.currentTarget.value);
             });
@@ -314,14 +330,16 @@ function pageElementEventAdd(flag){
 
                 let rangeInput = e.currentTarget.parentElement.querySelector('input');
 
+                let numberInput = e.currentTarget.parentElement.parentElement.querySelector('[type="number"]');
+
                 switch (imgType){
                     case "minus":
-                        rangeInput.value = e.currentTarget.parentElement.querySelector('input').value - 1;
-                        e.currentTarget.parentElement.parentElement.querySelector('input[type="number"]').value = rangeInput.value;
+                        numberInput.value = numberInput.value -1;
+                        rangeInput.value = numberInput.value;
                         break;
                     case "plus":
-                        rangeInput.value = e.currentTarget.parentElement.querySelector('input').value*1 + 1;
-                        e.currentTarget.parentElement.parentElement.querySelector('input[type="number"]').value = rangeInput.value;
+                        numberInput.value = numberInput.value *1 + 1;
+                        rangeInput.value = numberInput.value;
                         break;
                 }
 
@@ -344,30 +362,30 @@ function pageElementEventAdd(flag){
                     workout_routine_seq:$modifyDom.dataset.setNum,
                     routine_record_date:nowSelectDate()
                 };
-                AjaxRequest("ModifyRoutineMaster",data)
+                AjaxRequest("ModifyRoutineDetail",data)
                 $('.routine-set-modify-modal-wrap').toggleClass('displayNone');
-
-                routineScoreBoxRan(data);
-
-
-
-
             });
             if("#routineModifyOkBtn" === flag) break;
+
         case "All":
-        case ".routine-delete-btn": //routine score 수정 적용 버튼
+        case ".routine-delete-btn i": //routine score 수정 적용 버튼
             // 투린 세트 삭제 버튼
             $('.routine-delete-btn i').click(function(e){
-                if(!confirm("세트 정보를 삭제 하시겠습니까?")) return;
-                console.log("test");
                 let $scoreDOM = e.currentTarget.parentElement.parentElement;
+
+                if(!confirm("세트 정보를 삭제 하시겠습니까?")) return;
                 let data={
                     daily_record_detail_code:$scoreDOM.dataset.dailyRecordDetailCode,
                     daily_record_master_code:$scoreDOM.dataset.dailyRecordMasterCode
                 }
-                AjaxRequest("dailyRecordDetailDelete",data)
+                e.currentTarget.parentElement.parentElement.parentElement.parentElement.querySelectorAll('.routine-score-box div').forEach((item)=>{
+                    item.remove();
+                });
+                AjaxRequest("dailyRecordDetailDelete",data);
+
+
             });
-            if(".routine-delete-btn" === flag) break;
+            if(".routine-delete-btn i" === flag) break;
 
 
         case "All":
@@ -406,33 +424,43 @@ function pageElementEventAdd(flag){
  */
 
 /**
+ * 운동 타입별 이미지 링크
+ * @param {String} type workout_type_d
+ */
+function workoutTypeImageRendering(type){
+    let imgSrc;
+    switch (type) {
+        case "가슴":
+            imgSrc = "/img/white-bench-press.png";
+            break;
+        case "어깨":
+            imgSrc = "/img/weight-weight-lifting.png";
+            break;
+        case "등":
+            imgSrc = "/img/white-pull-up.png";
+            break;
+        case "팔":
+            imgSrc = "/img/white-bodybuilder.png";
+            break;
+        case "코어":
+            imgSrc = "/img/white-gym-machine.png";
+            break;
+        case "하체":
+            imgSrc = "/img/weight-power-rack.png";
+            break;
+    }
+    return imgSrc
+}
+
+/**
  * 오측 사이드바 렌더링 함수
  * @param Data MyRoutine Model
  */
 function rightSidebarDom(Data,flag){
+    let imgSrc ="";
     Data.forEach((routine)=>{
 
-        let imgSrc;
-        switch (routine.routine_type_d){
-            case "가슴":
-                imgSrc = "/img/white-bench-press.png";
-                break;
-            case "어깨":
-                imgSrc = "/img/weight-weight-lifting.png";
-                break;
-            case "등":
-                imgSrc = "/img/white-pull-up.png";
-                break;
-            case "팔":
-                imgSrc = "/img/white-bodybuilder.png";
-                break;
-            case "코어":
-                imgSrc = "/img/white-gym-machine.png";
-                break;
-            case "하체":
-                imgSrc = "/img/weight-power-rack.png";
-                break;
-        }
+        imgSrc = workoutTypeImageRendering(routine.routine_type_d);
 
         let $routineBox = document.createElement('div');
         $routineBox.classList.add("routine-items-box");
@@ -540,7 +568,9 @@ function workoutRoutineBoxDOM(data){
         let $routineIcon = document.createElement('div');
         $routineIcon.classList.add("routine-icon");
         let $routineIconImg = document.createElement('img');
-        $routineIconImg.setAttribute('src','/img/white-bench-press.png');
+
+        let imgSrc = workoutTypeImageRendering(routine.routine_type_d);
+        $routineIconImg.setAttribute('src',imgSrc);
         $routineIcon.append($routineIconImg);
 
         let $routineName = document.createElement('div');
@@ -581,10 +611,11 @@ function workoutRoutineBoxDOM(data){
             $routineDoneChekchbox.classList.add('form-check');
             $routineDoneChekchbox.classList.add('info-status');
             let $routineFormCheckInput = document.createElement('input');
+            $routineFormCheckInput.checked = YnConvertFunction(detailItem.workout_done_yn);
             $routineFormCheckInput.type='checkbox';
             $routineFormCheckInput.classList.add('form-check-input');
             $routineFormCheckInput.classList.add('login-checkbox');
-            $routineFormCheckInput.id = 'workoutDoneYn';
+            $routineFormCheckInput.dataset.workoutDoneYn = detailItem.workout_done_yn;
             $routineDoneChekchbox.append($routineFormCheckInput);
             $routineScore.append($routineDoneChekchbox);
 
@@ -657,7 +688,8 @@ function workoutRoutineBoxDOM(data){
     pageElementEventAdd('.item-box');
     pageElementEventAdd('.routine-score-box');
     pageElementEventAdd('.routine-score');
-    pageElementEventAdd('.routine-delete-btn');
+    pageElementEventAdd('.routine-delete-btn i');
+    pageElementEventAdd('[data-workout-done-yn]');
 }
 
 
@@ -675,7 +707,7 @@ function routineSetAddDOM(e){
         let $routineScore = document.createElement('div');
         $routineScore.classList.add('routine-score');
         $routineScore.dataset.dailyRecordMasterCode = $routineTitleDOM.dataset.dailyRecordMasterCode;
-        $routineScore.dataset.setNum = 0;
+        $routineScore.dataset.setNum = 1;
 
         let $routineDoneChekchbox = document.createElement('div');
         $routineDoneChekchbox.classList.add('routine-done-checkbox');
@@ -685,14 +717,15 @@ function routineSetAddDOM(e){
         $routineFormCheckInput.type='checkbox';
         $routineFormCheckInput.classList.add('form-check-input');
         $routineFormCheckInput.classList.add('login-checkbox');
-        $routineFormCheckInput.id = 'workoutDoneYn';
+        $routineFormCheckInput.dataset.workoutDoneYn = 'N';
+
         $routineDoneChekchbox.append($routineFormCheckInput);
         $routineScore.append($routineDoneChekchbox);
 
         let $routineSetNum = document.createElement('div');
         $routineSetNum.classList.add('routine-set-num');
         let $routineSetNumSpan = document.createElement('span');
-        $routineSetNumSpan.dataset.setNum = 0;
+        $routineSetNumSpan.dataset.setNum = 1;
         $routineSetNumSpan.textContent = 1;
         $routineSetNum.append($routineSetNumSpan);
         $routineSetNum.append("세트");
@@ -729,22 +762,24 @@ function routineSetAddDOM(e){
         e.currentTarget.parentElement.parentElement.querySelector('.routine-score-box').appendChild($routineScore);
 
         pageElementEventAdd('.routine-score');
-        pageElementEventAdd('.routine-delete-btn');
+        pageElementEventAdd('.routine-delete-btn i');
+        pageElementEventAdd('[data-workout-done-yn]');
         return;
     }
     let $domBox = e.currentTarget.parentElement.parentElement;
     let $scoreDom = e.currentTarget.parentElement.parentElement.querySelector(".routine-score:last-child").cloneNode(true);
-
+    $scoreDom.querySelector('input[type="checkbox"]').checked = false;
     let setNum = $scoreDom.querySelector('.routine-set-num span').innerText * 1 +1;
     let weight = $scoreDom.querySelector('.routine-weight span').innerText * 1;
     let count = $scoreDom.querySelector('.routine-count span').innerText * 1;
     $scoreDom.querySelector('.routine-set-num span').innerText = setNum;
 
-    $scoreDom.dataset.setNum = setNum-1 //zero base number;
+    $scoreDom.dataset.setNum = setNum;
 
     e.currentTarget.parentElement.parentElement.querySelector('.routine-score-box').appendChild($scoreDom);
     pageElementEventAdd('.routine-score');
-    pageElementEventAdd('.routine-delete-btn');
+    pageElementEventAdd('.routine-delete-btn i');
+    pageElementEventAdd('[data-workout-done-yn]');
 }
 
 
@@ -754,6 +789,71 @@ function routineSetAddDOM(e){
  */
 function routineScoreBoxRan(data){
 
+    let $routineScore = document.createElement('div');
+    $routineScore.classList.add('routine-score');
+    $routineScore.dataset.dailyRecordMasterCode = data.daily_record_master_code;
+    $routineScore.dataset.dailyRecordDetailCode = data.daily_record_detail_code;
+    $routineScore.dataset.setNum = data.workout_routine_seq;
+
+    let $routineDoneChekchbox = document.createElement('div');
+    $routineDoneChekchbox.classList.add('routine-done-checkbox');
+    $routineDoneChekchbox.classList.add('form-check');
+    $routineDoneChekchbox.classList.add('info-status');
+    let $routineFormCheckInput = document.createElement('input');
+    $routineFormCheckInput.type='checkbox';
+    $routineFormCheckInput.classList.add('form-check-input');
+    $routineFormCheckInput.classList.add('login-checkbox');
+    $routineFormCheckInput.dataset.workoutDoneYn = data.workout_done_yn;
+    $routineFormCheckInput.checked = YnConvertFunction(data.workout_done_yn);
+    $routineDoneChekchbox.append($routineFormCheckInput);
+    $routineScore.append($routineDoneChekchbox);
+
+    let $routineSetNum = document.createElement('div');
+    $routineSetNum.classList.add('routine-set-num');
+    let $routineSetNumSpan = document.createElement('span');
+    $routineSetNumSpan.dataset.setNum = data.workout_routine_seq;
+    $routineSetNumSpan.textContent = data.workout_routine_seq;
+    $routineSetNum.append($routineSetNumSpan);
+    $routineSetNum.append("세트");
+
+
+    let $routineWeight = document.createElement('div');
+    $routineWeight.classList.add('routine-weight');
+    let $routineWeightSpan = document.createElement('span');
+    $routineWeightSpan.dataset.weight = data.workout_set_weight;
+    $routineWeightSpan.textContent = data.workout_set_weight;
+    $routineWeight.append($routineWeightSpan);
+    $routineWeight.append(" Kg");
+
+
+    let $routineCount = document.createElement('div');
+    $routineCount.classList.add('routine-count');
+    let $routineCountSpan = document.createElement('span');
+    $routineCountSpan.dataset.count = data.workout_iterations_count;
+    $routineCountSpan.textContent = data.workout_iterations_count;
+    $routineCount.append($routineCountSpan);
+    $routineCount.append(" 회");
+
+    let $routineDeleteBtn = document.createElement('div');
+    $routineDeleteBtn.classList.add('routine-delete-btn');
+    let $routineDeleteBtnI = document.createElement('i');
+    $routineDeleteBtnI.classList.add('bi');
+    $routineDeleteBtnI.classList.add('bi-trash');
+    $routineDeleteBtn.append($routineDeleteBtnI);
+
+    $routineScore.append($routineSetNum);
+    $routineScore.append($routineWeight);
+    $routineScore.append($routineCount);
+    $routineScore.append($routineDeleteBtn);
+
+
+    let targetTitleBox = document.querySelector('.routine-title[data-daily-record-master-code="'+data.daily_record_master_code+'"]');
+    targetTitleBox.parentElement.querySelector('.routine-score-box').appendChild($routineScore);
+
+
+    pageElementEventAdd('.routine-score');
+    pageElementEventAdd('.routine-delete-btn i');
+    pageElementEventAdd('[data-workout-done-yn]');
 }
 /* 3. 데이터 연산 function
  *  - 데이터에 대한 보정이 필요함 함수 작성하는 공간
@@ -768,9 +868,9 @@ function routineScoreBoxRan(data){
  */
 function AjaxRequest(type,data,flag){
     switch(type){
-        case "selDateRoutineRequest":
-            console.log("AJAX : selDateRoutineRequest을 수행합니다");
-            break;
+        // case "selDateRoutineRequest":
+        //     console.log("AJAX : selDateRoutineRequest을 수행합니다");
+        //     break;
         case "myRoutineListRequest":
             console.log("myRoutineListRequest : Ajax Request !!");
             $.ajax({
@@ -858,6 +958,11 @@ function AjaxRequest(type,data,flag){
                     console.log(res);
                     workoutRoutineBoxDOM(res);
                     pageElementEventAdd('.routine-set-add-btn');
+                    if(res.length === 0){
+                        $('.selectedDate .attendance-line').text("");
+                        $('.selectedDate .attendance-line').toggleClass('attendance-line');
+
+                    }
                 }
             });
             break;
@@ -915,11 +1020,11 @@ function AjaxRequest(type,data,flag){
                 }
             });
             break;
-        case "ModifyRoutineMaster":
-            console.log("ModifyRoutineMaster : Ajax Request !!");
+        case "ModifyRoutineDetail":
+            console.log("ModifyRoutineDetail : Ajax Request !!");
 
             $.ajax({
-                url:'/api/app1/ModifyRoutineMaster',
+                url:'/api/app1/ModifyRoutineDetail',
                 type:'post',
                 contentType:"application/json;charset=UTF-8",
                 dataType:"json",
@@ -956,8 +1061,10 @@ function AjaxRequest(type,data,flag){
                 async: false,
                 data:JSON.stringify(data),
                 success:function(res){
+                    res.forEach((detail)=>{
+                        routineScoreBoxRan(detail);
+                    })
 
-                    console.log(res);
 
                 }
             });
@@ -985,6 +1092,25 @@ const debounce = (callback, delay) => {
     };
 };
 
+/**
+ * Y / N 을 boolean 값으로 변환하는 함수
+ * @param {String } flag (Y or N) ('true' or 'false')
+ * @returns {boolean}
+ */
+function YnConvertFunction(flag){
+    switch (flag){
+        case "Y":
+        case "N":
+            return flag === 'Y'?true:false;
+        case "true":
+        case "false":
+            return flag === 'true'?true:false;
+        case true:
+        case false:
+            return flag ? "Y":"N";
+    }
+}
+
 function nowSelectDate(){
     if(null === document.querySelector('.selectedDate .dateLabel')){
         alert("날짜를 먼저 선택해 주세요.");
@@ -1002,5 +1128,3 @@ function nowSelectDate(){
     console.log("선택 날짜 : "+selYear+"-"+selMonth+"-"+selDate);
     return selYear+"-"+selMonth+"-"+selDate;
 }
-
-
