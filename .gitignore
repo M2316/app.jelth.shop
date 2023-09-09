@@ -1,6 +1,6 @@
 ### CUSTOM ###
 application.yml
-/QUERY/
+**/QUERY/
 
 ### END ###
 
