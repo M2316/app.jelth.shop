@@ -82,4 +82,4 @@
 <br/>
   
 ## 📅 개발 스케줄
-![image](https://github.com/M2316/app.jelth.shop/assets/71809974/95d48b1e-4b7b-4301-bd46-0321d054ed57)
+![image](https://github.com/M2316/app.jelth.shop/assets/71809974/63f5ecbb-f4d6-4121-a576-be2fef0076c6)
