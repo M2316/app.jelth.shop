@@ -227,12 +227,31 @@ function pageElementEventAdd(flag){
             // 삭제 이벤트
             $('.item-box').on("mousedown",function(e){
                 eventStartTime = e.timeStamp;
+                eventStartScreenX = e.screenX;
+                eventStartScreenY = e.screenY;
             });
             $('.item-box').on("touchstart",function(e){
                 eventStartTime = e.timeStamp;
+                eventStartScreenX = e.touches[0].screenX;
+                eventStartScreenY = e.touches[0].screenY;
             });
             $('.item-box').on("touchend",function(e){
                 eventEndTime = e.timeStamp;
+
+
+                //터치 이동하면 이벤트 종료
+                let currentScreenX = e.changedTouches[0].screenX;
+                let currentScreenY = e.changedTouches[0].screenY;
+                let screenX = Math.abs(currentScreenX - eventStartScreenX);
+                let screenY = Math.abs(currentScreenY - eventStartScreenY);
+
+                console.log("eventStartScreenX : "+ eventStartScreenX + " / currentScreenX : "+currentScreenX);
+                console.log("eventStartScreenY : "+ eventStartScreenY + " / currentScreenY : "+currentScreenY);
+                console.log("screenX : " + screenX + " / screenY : " + screenY);
+
+                if(screenX > 50 || screenY > 50) return;
+
+
                 if((eventEndTime-eventStartTime)>800){
                     if(!confirm("선택 루틴을 삭제 할까요?"))return;
                     let routineTitle = e.currentTarget.querySelector('.routine-title');
@@ -247,6 +266,19 @@ function pageElementEventAdd(flag){
             });
             $('.item-box').on("mouseup",function(e){
                 eventEndTime = e.timeStamp;
+
+                //터치 이동하면 이벤트 종료
+                let currentScreenX = e.screenX;
+                let currentScreenY = e.screenY;
+                let screenX = Math.abs(currentScreenX - eventStartScreenX);
+                let screenY = Math.abs(currentScreenY - eventStartScreenY);
+
+                console.log("eventStartScreenX : "+ eventStartScreenX + " / currentScreenX : "+currentScreenX);
+                console.log("eventStartScreenY : "+ eventStartScreenY + " / currentScreenY : "+currentScreenY);
+                console.log("screenX : " + screenX + " / screenY : " + screenY);
+
+                if(screenX > 50 || screenY > 50) return;
+
                 if((eventEndTime-eventStartTime)>800){
                     if(!confirm("선택 루틴을 삭제 할까요?"))return;
                     let routineTitle = e.currentTarget.querySelector('.routine-title');
