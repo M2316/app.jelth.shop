@@ -85,7 +85,7 @@
             #{routineTypeB},
             #{routineTypeC},
             #{routineTypeD},
-            (SELECT count(*) FROM daily_record_m WHERE routine_record_date = #{routineRecordDate}),
+            (SELECT count(*)+1 FROM daily_record_m WHERE routine_record_date = #{routineRecordDate}),
             #{routineRecordDate}
        )
     </insert>
